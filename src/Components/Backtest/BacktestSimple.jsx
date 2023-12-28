@@ -8,10 +8,11 @@ import html2pdf from 'html2pdf.js';
 
 export default function BacktestSimple() {
   const [conditions, setConditions] = useState([]);
-  const [activeButton, setActiveButton] = useState(null);
+  const [activeButton, setActiveButton] = useState({});
   const [optionButton, setOptionButton] = useState(null);
   const [trailStopLoss, settrailStopLoss] = useState(false);
   const [setIntervalB, setIntervalButton] = useState(null);
+  const [currentIndex, setCurrentIndex] = useState(null);
   const [tradingConditions, setTradingConditions] = useState({
     targetProfit: true,
     stopLoss: true,
@@ -51,7 +52,18 @@ export default function BacktestSimple() {
    
   };
 
-  return <>
+
+  const setFormValue = (name, index, e, type) => { 
+    setCurrentIndex(index);
+    
+    const updatedConditions = [...conditions];
+    const currentCondition = updatedConditions[index] || {};
+    currentCondition[name] = e;
+    updatedConditions[index] = currentCondition;
+   console.log(updatedConditions)
+    setConditions(updatedConditions);
+  } 
+  return <> 
  <Affix top={60}>
 <Row style={{marginBottom: 40, background: "#e7e7e7"}}>
 <Panel shaded style={{paddingBottom: "20px",background:"#10122b"}}>
@@ -107,8 +119,8 @@ export default function BacktestSimple() {
 
   <p style={{marginTop:50}}><b>Strategy Legs</b></p>
   {conditions.map((val, index) => 
-    <>
-    <Row style={{marginTop:20}}>
+    <div key={"index_" + index}>
+    <Row style={{marginTop:20}} >
     <Col md={24}>
 
 <p></p>
@@ -117,15 +129,17 @@ export default function BacktestSimple() {
  
   <Row>
 <Col md={6}>Lots <br />
-<input type="number" className="rs-input" style={{width:100}} min="1"/>
+<input type="number" className="rs-input" style={{width:100}} min="1"  onChange={(e) => {
+                        setFormValue("lots", index, e.target.value);
+                      }}/>
 </Col>
 <Col md={6}>Position <br />
-<Button appearance="ghost" className={activeButton === 'Buy' ? 'active' : ''} onClick={() => {
-  
-    setActiveButton("Buy")
-  }}>Buy</Button><Button appearance="ghost" className={activeButton === 'Sell' ? 'active' : ''} onClick={() => {
-    
-    setActiveButton("Sell")
+<Button appearance="ghost"  className={activeButton["activeButton" + index] === 'Buy' ? 'active' : ''} onClick={() => {
+   setFormValue("position", index, "Buy");
+   setActiveButton({ ...activeButton, ["activeButton" + index]: "Buy" });
+  }}>Buy</Button><Button appearance="ghost" className={activeButton["activeButton" + index] === 'Sell' ? 'active' : ''} onClick={() => {
+    setFormValue("position", index, "Sell");
+    setActiveButton({ ...activeButton, ["activeButton" + index]: "Sell" });
   }}>Sell</Button></Col>
 <Col md={6}>Option Type <br />
 <Button appearance="ghost" className={optionButton === 'Call' ? 'active' : ''} onClick={() => {
@@ -232,7 +246,7 @@ setTradingConditions({...tradingConditions, ["stopLoss"]: !e})
 </div>
     </Col>
   </Row>
-    </>
+    </div>
   )}
   
   
@@ -246,12 +260,12 @@ setTradingConditions({...tradingConditions, ["stopLoss"]: !e})
 <input type="number" className="rs-input" style={{width:100}} min="1"/>
 </Col>
 <Col md={6}>Position <br />
-<Button appearance="ghost" className={activeButton === 'Buy' ? 'active' : ''} onClick={() => {
-  
-    setActiveButton("Buy")
-  }}>Buy</Button><Button appearance="ghost" className={activeButton === 'Sell' ? 'active' : ''} onClick={() => {
+<Button appearance="ghost" className={activeButton["activeButtondefault"]==="Buy" ? 'active' : ''} onClick={() => {
+  setActiveButton({ ...activeButton, ["activeButtondefault"]: "Buy" })
     
-    setActiveButton("Sell")
+  }}>Buy</Button><Button appearance="ghost" className={activeButton["activeButtondefault"] === "Sell" ? 'active' : ''} onClick={() => {
+    setActiveButton({ ...activeButton, ["activeButtondefault"]: "Sell" });
+    
   }}>Sell</Button></Col>
 <Col md={6}>Option Type <br />
 <Button appearance="ghost" className={optionButton === 'Call' ? 'active' : ''} onClick={() => {

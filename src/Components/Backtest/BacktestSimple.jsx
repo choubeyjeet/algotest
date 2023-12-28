@@ -143,14 +143,17 @@ export default function BacktestSimple() {
   }}>Sell</Button></Col>
 <Col md={6}>Option Type <br />
 <Button appearance="ghost" className={optionButton === 'Call' ? 'active' : ''} onClick={() => {
-  
+  setFormValue("option", index, "Call");
     setOptionButton("Call")
-  }}>Call</Button><Button appearance="ghost" className={optionButton === 'Put' ? 'active' : ''} onClick={() => {
-    
+  }}
+  >Call</Button><Button appearance="ghost" className={optionButton === 'Put' ? 'active' : ''} onClick={() => {
+    setFormValue("option", index, "Put");
     setOptionButton("Put")
   }}>Put</Button></Col>
 <Col md={6}>Strike Type <br />
-<select className="rs-input" style={{width: "50%"}} defaultValue="StrikeType.ATM">
+<select className="rs-input" style={{width: "50%"}} defaultValue="StrikeType.ATM" onChange={() => {
+                        setFormValue("striketype", index, e.target.value);
+                      }}>
 <option value="StrikeType.ITM20">ITM20</option>
 <option value="StrikeType.ITM19">ITM19</option>
 <option value="StrikeType.ITM18">ITM18</option>
@@ -202,12 +205,16 @@ setTradingConditions({...tradingConditions,["targetProfit"]: !e})
             }}/>
             <br/><br/>
           {!tradingConditions.targetProfit && <>  <Row>
-                <Col md={9}> <select className="rs-input" style={{ background:"#10122b", color:"#ffffff"}} disabled={tradingConditions.targetProfit}>
+                <Col md={9}> <select className="rs-input" style={{ background:"#10122b", color:"#ffffff"}} disabled={tradingConditions.targetProfit} onChange={(e) => {
+                        setFormValue("targetprofit", index, e.target.value);
+                      }}>
                 <option value="LegTgtSLType.Percentage">%</option>
                 <option value="LegTgtSLType.Points">Pts</option>
                 </select>
                 </Col>
-                <Col md={12}><input className="rs-input" style={{width: 100}} type="number" min="0" /></Col>
+                <Col md={12}><input className="rs-input" style={{width: 100}} type="number" min="0" onChange={(e) => {
+                        setFormValue("targetprofitvalue", index, e.target.value);
+                      }}/></Col>
             </Row></>}
            
                 
@@ -220,24 +227,34 @@ setTradingConditions({...tradingConditions, ["stopLoss"]: !e})
             }}/> <br/><br/>
 
             {!tradingConditions.stopLoss && <>  <Row>
-                <Col md={9}> <select className="rs-input" style={{ background:"#10122b", color:"#ffffff"}} disabled={tradingConditions.stopLoss}>
+                <Col md={9}> <select className="rs-input" style={{ background:"#10122b", color:"#ffffff"}} disabled={tradingConditions.stopLoss} onChange={(e) => {
+                        setFormValue("stopLosstype", index, e.target.value);
+                      }}>
                 <option value="LegTgtSLType.Percentage">%</option>
                 <option value="LegTgtSLType.Points">Pts</option>
                 </select>
                 </Col>
-                <Col md={12}><input className="rs-input" style={{width: 100}} type="number" min="0"  disabled={tradingConditions.stopLoss}/></Col>
+                <Col md={12}><input className="rs-input" style={{width: 100}} type="number" min="0"  disabled={tradingConditions.stopLoss} onChange={(e) => {
+                        setFormValue("stopLossvalue", index, e.target.value);
+                      }}/></Col>
             </Row></>}
           
            </Col>
            {!tradingConditions.stopLoss && <>   <Col md={6}>Trail SL &nbsp; <br/><br/>
             <Row>
-                <Col md={9}> <select className="rs-input" style={{ background:"#10122b", color:"#ffffff"}} disabled={tradingConditions.stopLoss}>
+                <Col md={9}> <select className="rs-input" style={{ background:"#10122b", color:"#ffffff"}} disabled={tradingConditions.stopLoss} onChange={(e) => {
+                        setFormValue("trailSLtype", index, e.target.value);
+                      }}>
                 <option value="LegTgtSLType.Percentage">%</option>
                 <option value="LegTgtSLType.Points">Pts</option>
                 </select>
                 </Col>
-                <Col md={6}><input className="rs-input" style={{width: 60}} type="number" min="0"  disabled={tradingConditions.stopLoss}/></Col>
-                <Col md={6}><input className="rs-input" style={{width: 60}} type="number" min="0"  disabled={tradingConditions.stopLoss}/></Col>
+                <Col md={6}><input className="rs-input" style={{width: 60}} type="number" min="0"  disabled={tradingConditions.stopLoss} onChange={(e) => {
+                        setFormValue("trailSLvalue_1", index, e.target.value);
+                      }}/></Col>
+                <Col md={6}><input className="rs-input" style={{width: 60}} type="number" min="0"  disabled={tradingConditions.stopLoss} onChange={(e) => {
+                        setFormValue("trailSLvalue_2", index, e.target.value);
+                      }}/></Col>
             </Row>
            </Col> </> }
         

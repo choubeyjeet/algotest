@@ -2,10 +2,7 @@ import { Container, Header, Sidebar, Sidenav, Content, Navbar, Nav } from 'rsuit
 import CogIcon from '@rsuite/icons/legacy/Cog';
 import AngleLeftIcon from '@rsuite/icons/legacy/AngleLeft';
 import AngleRightIcon from '@rsuite/icons/legacy/AngleRight';
-import GearCircleIcon from '@rsuite/icons/legacy/GearCircle';
-import DashboardIcon from '@rsuite/icons/Dashboard';
-import GroupIcon from '@rsuite/icons/legacy/Group';
-import MagicIcon from '@rsuite/icons/legacy/Magic';
+
 import React from 'react';
 
 
@@ -34,7 +31,7 @@ const NavToggle = ({ expand, onChange }) => {
     );
   };
   
-export default function SideNavbar() {
+export default function SideNavbar({setShow}) {
     const [expand, setExpand] = React.useState(true);
   
     return <>   <Sidebar
@@ -59,7 +56,7 @@ export default function SideNavbar() {
             // icon={<MagicIcon />}
             placement="rightStart"
           >
-            <Nav.Item eventKey="1-1">+ Add new</Nav.Item>
+            <Nav.Item eventKey="1-1" onClick={()=>{setShow("Stocks")}}>+ Add new</Nav.Item>
             
           </Nav.Menu>
           <Nav.Menu
@@ -69,7 +66,7 @@ export default function SideNavbar() {
             // icon={<MagicIcon />}
             placement="rightStart"
           >
-            <Nav.Item eventKey="2-1">+ Add new</Nav.Item>
+            <Nav.Item eventKey="2-1" onClick={()=>{setShow("Simple")}}>+ Add new</Nav.Item>
             
           </Nav.Menu>
           <Nav.Menu
@@ -79,7 +76,7 @@ export default function SideNavbar() {
             // icon={<MagicIcon />}
             placement="rightStart"
           >
-            <Nav.Item eventKey="3-1">+ Add new</Nav.Item>
+            <Nav.Item eventKey="3-1" onClick={()=>{setShow("Straddle")}}>+ Add new</Nav.Item>
             
           </Nav.Menu>
           <Nav.Menu
@@ -89,7 +86,7 @@ export default function SideNavbar() {
             // icon={<MagicIcon />}
             placement="rightStart"
           >
-            <Nav.Item eventKey="4-1">+ Add new</Nav.Item>
+            <Nav.Item eventKey="4-1" onClick={()=>{setShow("VWAP")}}>+ Add new</Nav.Item>
             
           </Nav.Menu>
         </Nav>

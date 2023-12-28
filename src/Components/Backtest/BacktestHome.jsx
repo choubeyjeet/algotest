@@ -6,9 +6,9 @@ import LogicBuilder from "../Logic/LogicBuilder";
 import { useDispatch } from "react-redux";
 import {formValue} from "../../features/Backtest/BackTestSlice";
 import html2pdf from 'html2pdf.js';
+import {ListedCompany} from "./ListedCompany";
 
-
-const instrumentList = ['ADANIENT', 'ADANIPORTS', 'APOLLOHOSP', 'ASIANPAINT', 'AXISBANK', 'BAJAJ-AUTO', 'BAJAJFINSV', 'BAJFINANCE', "BHARTIARTL", "BPCL"].map(
+const instrumentList =  ListedCompany.map(
     item => ({ label: item, value: item })
   );
 

@@ -6,15 +6,17 @@ import { SelectPicker,Row, Col, Button, Input, Panel, Affix, ButtonToolbar, Butt
 import html2pdf from 'html2pdf.js';
 
 
-
-
-  
 export default function BacktestSimple() {
+  const [conditions, setConditions] = useState([]);
   const [activeButton, setActiveButton] = useState(null);
   const [optionButton, setOptionButton] = useState(null);
   const [trailStopLoss, settrailStopLoss] = useState(false);
   const [setIntervalB, setIntervalButton] = useState(null);
-
+  const [tradingConditions, setTradingConditions] = useState({
+    targetProfit: true,
+    stopLoss: true,
+   
+  });
 
   const currentDate = getFormattedDate(); // Current date
    const yesterdayDate = getFormattedDate(-1); // Yesterday's date
@@ -41,6 +43,14 @@ export default function BacktestSimple() {
       };
     html2pdf(element, options);
   };
+
+
+  const handleAddCondition = () => {
+    const newCondition = {};
+    setConditions([...conditions, newCondition]);
+   
+  };
+
   return <>
  <Affix top={60}>
 <Row style={{marginBottom: 40, background: "#e7e7e7"}}>
@@ -93,6 +103,139 @@ export default function BacktestSimple() {
 </div>
     </Col>
   </Row>
+
+
+  <p style={{marginTop:50}}><b>Strategy Legs</b></p>
+  {conditions.map((val, index) => 
+    <>
+    <Row style={{marginTop:20}}>
+    <Col md={24}>
+
+<p></p>
+<p><b>Leg {index + 1}</b> <br />&nbsp;</p>
+<div style={{padding: 10, background: "#e7e7e7"}}>
+ 
+  <Row>
+<Col md={6}>Lots <br />
+<input type="number" className="rs-input" style={{width:100}} min="1"/>
+</Col>
+<Col md={6}>Position <br />
+<Button appearance="ghost" className={activeButton === 'Buy' ? 'active' : ''} onClick={() => {
+  
+    setActiveButton("Buy")
+  }}>Buy</Button><Button appearance="ghost" className={activeButton === 'Sell' ? 'active' : ''} onClick={() => {
+    
+    setActiveButton("Sell")
+  }}>Sell</Button></Col>
+<Col md={6}>Option Type <br />
+<Button appearance="ghost" className={optionButton === 'Call' ? 'active' : ''} onClick={() => {
+  
+    setOptionButton("Call")
+  }}>Call</Button><Button appearance="ghost" className={optionButton === 'Put' ? 'active' : ''} onClick={() => {
+    
+    setOptionButton("Put")
+  }}>Put</Button></Col>
+<Col md={6}>Strike Type <br />
+<select className="rs-input" style={{width: "50%"}} defaultValue="StrikeType.ATM">
+<option value="StrikeType.ITM20">ITM20</option>
+<option value="StrikeType.ITM19">ITM19</option>
+<option value="StrikeType.ITM18">ITM18</option>
+<option value="StrikeType.ITM17">ITM17</option>
+<option value="StrikeType.ITM16">ITM16</option>
+<option value="StrikeType.ITM15">ITM15</option>
+<option value="StrikeType.ITM14">ITM14</option>
+<option value="StrikeType.ITM13">ITM13</option>
+<option value="StrikeType.ITM12">ITM12</option>
+<option value="StrikeType.ITM11">ITM11</option>
+<option value="StrikeType.ITM10">ITM10</option>
+<option value="StrikeType.ITM9">ITM9</option>
+<option value="StrikeType.ITM8">ITM8</option>
+<option value="StrikeType.ITM7">ITM7</option>
+<option value="StrikeType.ITM6">ITM6</option>
+<option value="StrikeType.ITM5">ITM5</option>
+<option value="StrikeType.ITM4">ITM4</option>
+<option value="StrikeType.ITM3">ITM3</option>
+<option value="StrikeType.ITM2">ITM2</option>
+<option value="StrikeType.ITM1">ITM1</option>
+<option value="StrikeType.ATM">ATM</option>
+<option value="StrikeType.OTM1">OTM1</option>
+<option value="StrikeType.OTM2">OTM2</option>
+<option value="StrikeType.OTM3">OTM3</option>
+<option value="StrikeType.OTM4">OTM4</option>
+<option value="StrikeType.OTM5">OTM5</option>
+<option value="StrikeType.OTM6">OTM6</option>
+<option value="StrikeType.OTM7">OTM7</option>
+<option value="StrikeType.OTM8">OTM8</option>
+<option value="StrikeType.OTM9">OTM9</option>
+<option value="StrikeType.OTM10">OTM10</option>
+<option value="StrikeType.OTM11">OTM11</option>
+<option value="StrikeType.OTM12">OTM12</option>
+<option value="StrikeType.OTM13">OTM13</option>
+<option value="StrikeType.OTM14">OTM14</option>
+<option value="StrikeType.OTM15">OTM15</option>
+<option value="StrikeType.OTM16">OTM16</option>
+<option value="StrikeType.OTM17">OTM17</option>
+<option value="StrikeType.OTM18">OTM18</option>
+<option value="StrikeType.OTM19">OTM19</option>
+<option value="StrikeType.OTM20">OTM20</option>
+</select></Col>
+  </Row>
+
+  <Row style={{marginTop:40}}>
+  <Col md={6}>Target Profit &nbsp;<Toggle size="md" onChange={(e)=>{
+
+setTradingConditions({...tradingConditions,["targetProfit"]: !e})
+            }}/>
+            <br/><br/>
+          {!tradingConditions.targetProfit && <>  <Row>
+                <Col md={9}> <select className="rs-input" style={{ background:"#10122b", color:"#ffffff"}} disabled={tradingConditions.targetProfit}>
+                <option value="LegTgtSLType.Percentage">%</option>
+                <option value="LegTgtSLType.Points">Pts</option>
+                </select>
+                </Col>
+                <Col md={12}><input className="rs-input" style={{width: 100}} type="number" min="0" /></Col>
+            </Row></>}
+           
+                
+                
+                
+                </Col>
+            <Col md={6}>Stop Loss &nbsp;<Toggle size="md" onChange={(e)=>{
+
+setTradingConditions({...tradingConditions, ["stopLoss"]: !e})
+            }}/> <br/><br/>
+
+            {!tradingConditions.stopLoss && <>  <Row>
+                <Col md={9}> <select className="rs-input" style={{ background:"#10122b", color:"#ffffff"}} disabled={tradingConditions.stopLoss}>
+                <option value="LegTgtSLType.Percentage">%</option>
+                <option value="LegTgtSLType.Points">Pts</option>
+                </select>
+                </Col>
+                <Col md={12}><input className="rs-input" style={{width: 100}} type="number" min="0"  disabled={tradingConditions.stopLoss}/></Col>
+            </Row></>}
+          
+           </Col>
+           {!tradingConditions.stopLoss && <>   <Col md={6}>Trail SL &nbsp; <br/><br/>
+            <Row>
+                <Col md={9}> <select className="rs-input" style={{ background:"#10122b", color:"#ffffff"}} disabled={tradingConditions.stopLoss}>
+                <option value="LegTgtSLType.Percentage">%</option>
+                <option value="LegTgtSLType.Points">Pts</option>
+                </select>
+                </Col>
+                <Col md={6}><input className="rs-input" style={{width: 60}} type="number" min="0"  disabled={tradingConditions.stopLoss}/></Col>
+                <Col md={6}><input className="rs-input" style={{width: 60}} type="number" min="0"  disabled={tradingConditions.stopLoss}/></Col>
+            </Row>
+           </Col> </> }
+        
+         
+  </Row>
+</div>
+    </Col>
+  </Row>
+    </>
+  )}
+  
+  
   <Row style={{marginTop:50}}>
     <Col md={24}>
 <p><b>Leg Builder (Weekly Expiry)</b></p>
@@ -162,6 +305,53 @@ export default function BacktestSimple() {
 <option value="StrikeType.OTM19">OTM19</option>
 <option value="StrikeType.OTM20">OTM20</option>
 </select></Col>
+  </Row>
+
+  <Row style={{marginTop:40}}>
+  <Col md={6}>Target Profit &nbsp;<Toggle size="md" onChange={(e)=>{
+
+setTradingConditions({...tradingConditions,["targetProfit"]: !e})
+            }}/>
+            <br/><br/>
+            <Row>
+                <Col md={9}> <select className="rs-input" style={{ background:"#10122b", color:"#ffffff"}} disabled={tradingConditions.targetProfit}>
+                <option value="LegTgtSLType.Percentage">%</option>
+                <option value="LegTgtSLType.Points">Pts</option>
+                </select>
+                </Col>
+                <Col md={12}><input className="rs-input" style={{width: 100}} type="number" min="0" /></Col>
+            </Row>
+           
+                
+                
+                
+                </Col>
+            <Col md={6}>Stop Loss &nbsp;<Toggle size="md" onChange={(e)=>{
+
+setTradingConditions({...tradingConditions, ["stopLoss"]: !e})
+            }}/> <br/><br/>
+            <Row>
+                <Col md={9}> <select className="rs-input" style={{ background:"#10122b", color:"#ffffff"}} disabled={tradingConditions.stopLoss}>
+                <option value="LegTgtSLType.Percentage">%</option>
+                <option value="LegTgtSLType.Points">Pts</option>
+                </select>
+                </Col>
+                <Col md={12}><input className="rs-input" style={{width: 100}} type="number" min="0"  disabled={tradingConditions.stopLoss}/></Col>
+            </Row>
+           </Col>
+
+           <Col md={6}>Trail SL &nbsp; <br/><br/>
+            <Row>
+                <Col md={9}> <select className="rs-input" style={{ background:"#10122b", color:"#ffffff"}} disabled={tradingConditions.stopLoss}>
+                <option value="LegTgtSLType.Percentage">%</option>
+                <option value="LegTgtSLType.Points">Pts</option>
+                </select>
+                </Col>
+                <Col md={6}><input className="rs-input" style={{width: 60}} type="number" min="0"  disabled={tradingConditions.stopLoss}/></Col>
+                <Col md={6}><input className="rs-input" style={{width: 60}} type="number" min="0"  disabled={tradingConditions.stopLoss}/></Col>
+            </Row>
+           </Col>
+           <Col md={6}>&nbsp;<br /><br /><Button style={{width:120}}appearance="primary" onClick={handleAddCondition}>Add Leg</Button></Col>
   </Row>
 </div>
     </Col>

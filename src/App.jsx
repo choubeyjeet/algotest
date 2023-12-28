@@ -2,13 +2,15 @@ import React, { useState } from "react";
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
 import Login from "./Components/Login/Login";
-import BacktestHome from "./Components/Backtest/BacktestHome";
+import HomeBackTestMain from "./Components/Backtest/HomeBackTestMain";
 import { Container, Content, Header, Affix } from "rsuite";
 import HeaderNavbar from "./Components/Navbar/HeaderNavbar";
 import SideNavbar from "./Components/Navbar/SideNavbar";
 
 
 export default function App() {
+
+const [showStocksWindow, setshowStocksWindow] =  useState("Stocks")
 
   return (
     <>
@@ -23,10 +25,10 @@ export default function App() {
              <Header><HeaderNavbar /></Header>
              </Affix>
               <Container>
-              <SideNavbar />
+              <SideNavbar setShow={setshowStocksWindow}/>
         <Content style={{padding: "2%"}}>
         <Routes>
-        <Route path="/" element={<BacktestHome />} />
+        <Route path="/" element={<HomeBackTestMain show={showStocksWindow} />} />
         </Routes>
       </Content>
       </Container>

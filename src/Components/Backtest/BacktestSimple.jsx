@@ -151,7 +151,7 @@ export default function BacktestSimple() {
     setOptionButton("Put")
   }}>Put</Button></Col>
 <Col md={6}>Strike Type <br />
-<select className="rs-input" style={{width: "50%"}} defaultValue="StrikeType.ATM" onChange={() => {
+<select className="rs-input" style={{width: "50%"}} defaultValue="StrikeType.ATM" onChange={(e) => {
                         setFormValue("striketype", index, e.target.value);
                       }}>
 <option value="StrikeType.ITM20">ITM20</option>

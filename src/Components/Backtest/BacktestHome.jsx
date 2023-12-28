@@ -64,6 +64,8 @@ const [formFields, setFormFileds] = useState({
     "StartDate":null,
     "EndDate":null
 });
+const [activeButton, setActiveButton] = useState(null);
+const [activeCandle, setActiveCandle] = useState(null);
 
    const currentDate = getFormattedDate(); // Current date
    const yesterdayDate = getFormattedDate(-1); // Yesterday's date
@@ -163,16 +165,18 @@ const saveStrategy = ()=>{
     }));
   }}/></Col>
     <Col md={1}></Col>
-    <Col md={3}><p>Position</p><Button appearance="ghost" onClick={() => {
+    <Col md={3}><p>Position</p><Button appearance="ghost" className={activeButton === 'Buy' ? 'active' : ''} onClick={() => {
     setFormFileds((prevFormFields) => ({
       ...prevFormFields,
       PositionType: "Buy"
     }));
-  }}>Buy</Button><Button appearance="ghost" onClick={() => {
+    setActiveButton("Buy")
+  }}>Buy</Button><Button appearance="ghost" className={activeButton === 'Sell' ? 'active' : ''} onClick={() => {
     setFormFileds((prevFormFields) => ({
       ...prevFormFields,
       PositionType: "Sell"
     }));
+    setActiveButton("Sell")
   }}>Sell</Button></Col>
     <Col md={1}></Col>
     <Col md={2}><p>Quantity</p><Input type="number" min="1" onChange={(e) => {
@@ -185,36 +189,41 @@ const saveStrategy = ()=>{
     <Col md={8}><p>Candle Intervals</p>
     <ButtonToolbar>
     <ButtonGroup>
-    <Button appearance="ghost" onClick={() => {
+    <Button appearance="ghost" className={activeCandle === '1m' ? 'active' : ''} onClick={() => {
     setFormFileds((prevFormFields) => ({
       ...prevFormFields,
       timeframe: "1m"
     }));
+    setActiveCandle("1m")
   }}>1min</Button>
     <Button appearance="ghost" onClick={() => {
     setFormFileds((prevFormFields) => ({
       ...prevFormFields,
       timeframe: "3m"
     }));
-  }}>3min</Button>
+    setActiveCandle("3m")
+  }} className={activeCandle === '3m' ? 'active' : ''}>3min</Button>
     <Button appearance="ghost" onClick={() => {
     setFormFileds((prevFormFields) => ({
       ...prevFormFields,
       timeframe: "5m"
     }));
-  }}>5min</Button>
+    setActiveCandle("5m")
+  }} className={activeCandle === '5m' ? 'active' : ''}>5min</Button>
     <Button appearance="ghost" onClick={() => {
     setFormFileds((prevFormFields) => ({
       ...prevFormFields,
       timeframe: "15m"
     }));
-  }}>15min</Button>
+    setActiveCandle("15m")
+  }} className={activeCandle === '15m' ? 'active' : ''}>15min</Button>
     <Button appearance="ghost" onClick={() => {
     setFormFileds((prevFormFields) => ({
       ...prevFormFields,
       timeframe: "1h"
     }));
-  }}>1hr</Button>
+    setActiveCandle("1h")
+  }} className={activeCandle === '1h' ? 'active' : ''}>1hr</Button>
     </ButtonGroup>
   </ButtonToolbar>
     

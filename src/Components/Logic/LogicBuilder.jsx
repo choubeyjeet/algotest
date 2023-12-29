@@ -384,7 +384,7 @@ return <div key={"indiOT"+ index}>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
         <Modal.Body>
         
         {["RSI", "SMA", "RMA", "EMA", "ATR"].includes(header) && <> <b>Period:</b> <Input
-          defaultValue={0}
+          
             type="number"
             onChange={(e) => {
               setFormValue(`_${fieldValue}_period`, currentIndex, e);
@@ -392,7 +392,7 @@ return <div key={"indiOT"+ index}>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
           /><br /></>}
           
           <b>Offset:</b> <Input
-          defaultValue={0}
+          
             type="number"
             onChange={(e) => {
               setFormValue(`_${fieldValue}_offset`, currentIndex, e);

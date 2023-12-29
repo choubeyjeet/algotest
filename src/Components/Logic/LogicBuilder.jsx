@@ -1,430 +1,478 @@
-import React, { useState } from "react";
-import { Button, SelectPicker, Input, Modal, Badge, Toggle } from "rsuite";
-import "./../../App.css";
+import { useRef, useState } from "react";
 import TrashIcon from '@rsuite/icons/Trash';
+import { FaAngleDown, FaAngleUp, FaDownload, FaSave, FaPlay, FaInfoCircle, FaEdit, } from "react-icons/fa";
+import { SelectPicker,Row, Col, Button, Input, Panel, Affix, ButtonToolbar, ButtonGroup, Toggle, Tooltip, Whisper, InputGroup } from "rsuite";
+import LogicBuilder from "../Logic/LogicBuilder";
+import { useDispatch } from "react-redux";
+import {formValue} from "../../features/Backtest/BackTestSlice";
+import html2pdf from 'html2pdf.js';
+import {ListedCompany} from "./ListedCompany";
 
-
-
-export default function LogicBuilder({display, type, setFormValueFinal}) {
-  const [conditions, setConditions] = useState([]);
- 
- 
-  const [open, setOpen] = useState(false);
-  const [header, setHeader] = useState("");
-  const [currentIndex, setCurrentIndex] = useState(null);
-  const [fieldValue, setFieldValue] = useState(null);
-  const [setShowMore, setShowMoreOptions] = useState(false);
-  
-  const fdata = [
-    "Open",
-    "Close",
-    "High",
-    "Low",
-    "Volume",
-    "RSI",
-    "SMA",
-    "RMA",
-    "EMA",
-    "ATR",
-    "TR",
-    "Number",
-  ];
-  
-  const data = fdata.map((item) => ({
-    label: item,
-    value: item,
-    role: item === 'Number' ? 'Number' : fdata.indexOf(item) <= fdata.indexOf('Volume') ? 'Stock Attributes' : 'Indicators',
-  }));
-  
-
-  const arithmeticOperators = [
-    "+",
-    "-",
-    "x", 
-    "÷",
-  ].map((item) => ({
-    label: item,
-    value: item,
-  }));
-  
-
-  const conditionalOperator = [
-    "GreaterThan",
-    "GreaterThanEqualTo",
-    "LessThan",
-    "LessThanEqualTo",
-    "EqualTo",
-    "NotEqualTo",
-    "CrossAbove",
-    "CrossBelow",
-    "+",
-    "-",
-  ].map((item) => ({
-    label: item,
-    value: item,
-  }));
-
-  const handleClose = () => setOpen(false);
-
-  const handleAddCondition = () => {
-    const newCondition = {};
-    setConditions([...conditions, newCondition]);
-   
-  };
-  const candleData = ["Close", "Open", "High", "Low", "Volume"].map((item) => ({
-    label: item,
-    value: item,
-  }));
-
-  const setFormValue = (name, index, e, type) => {
-    setCurrentIndex(index);
-  
-    const updatedConditions = [...conditions];
-    const currentCondition = updatedConditions[index] || {};
-  
-    if(type!=="Candle"){
-        if (
-            e === "Open" ||
-            e === "Close" ||
-            e === "High" ||
-            e === "Low" ||
-            e === "Volume" ||
-            e === "RSI" ||
-            e ==="ATR" ||
-            e==="TR" ||
-            e==="SMA" ||
-            e==="EMA" ||
-            e==="RMA"
-          ) {
-            setOpen(true);
-            setHeader(e);
-            setFieldValue(name);
-          }
-    }
-  
-    if (name === "operator") {
-      setOpen(false);
-    }
-  
-    // Clear values at the respective index if "first" or "second" field changes
-    if (
-      (name === "first" && currentCondition[name] !== e) ||
-      (name === "second" && currentCondition[name] !== e)
-    ) {
-      currentCondition[`_${name}_period`] = undefined;
-      currentCondition[`_${name}_offset`] = undefined;
-      currentCondition[`_${name}_candle`] = undefined;
-    }
-  
-    if (name === "airthmetic") {
-      if (!currentCondition.indicators) {
-        currentCondition.indicators = [];
-      }
-  
-      currentCondition.indicators.push({});
-      currentCondition[name] = e;
-    } else {
-      currentCondition[name] = e;
-    }
-  
-    updatedConditions[index] = currentCondition;
-    setConditions(updatedConditions);
-    getSelectedValuesAsJSON()
-  };
-  
-
-  const getSelectedValuesAsJSON = () => {
- 
-    const formattedConditions = conditions.map((condition, index) => {
-      const indicators = [];
- 
-      if (condition.indicators && condition.indicators.length > 0) {
-        condition.indicators.forEach((indicator, i) => {
-          const typeKey = `indicators_${index}_${i}`;
-          const periodKey = `_${typeKey}`;
-         
-  
-          const newIndicator = {
-            type: condition[typeKey],
-            period: condition[periodKey],
-          };
-  
-          indicators.push(newIndicator);
-        });
-      }
-  
-  const firstcond = condition.first;
-  const secondcond = condition.second;
-     const comparison = {
-      type: "Comparator",
-        value: condition.operator,
-        lhs: {
-          type: ["RSI", "SMA", "RMA", "EMA", "ATR", "TR"].includes(firstcond) ? "Indicator" : firstcond === "Number" ? "Number" : "Selector",
-          value: firstcond,
-          ...(firstcond !== "RSI" && { offset: condition._first_offset }),
-          ...(firstcond === "RSI" && { offset: condition._first_offset, args : {
-            period: condition._first_period
-          } }),
-          ...(["SMA", "RMA", "EMA"].includes(firstcond) && { offset: condition._first_offset, args : {
-            period: condition._first_period,
-            candle: condition._first_candle
-          } }),
-        },
-        
-        rhs: {
-          type: ["RSI", "SMA", "RMA", "EMA", "ATR", "TR"].includes(secondcond) ? "Indicator" : secondcond === "Number" ? "Number" : "Selector",
-          value: secondcond,
-          ...(secondcond !== "RSI" && { offset: condition._second_offset }),
-          ...(secondcond === "RSI" && {offset: condition._second_offset , "args": {
-            "period": condition._second_period
-          } }),
-          ...(["SMA", "RMA", "EMA"].includes(secondcond) && { offset: condition._second_offset, args : {
-            period: condition._second_period,
-            candle: condition._second_candle
-          } }),
-        },
-        
-        combination:{
-          "operator": condition.airthmetic,
-          "indicators": indicators,
-        }
-      };
-
-
-  
-     
-        return comparison;
-     
-     
-    });
-//    var finalConditions;
-//     if (type === "Entry") {
-//         finalConditions = [{ ["EntryIndicators"]: formattedConditions }];
-//       } else {
-//         finalConditions = [{ ["ExitIndicators"]: formattedConditions }];
-//       }
-      
-      setFormValueFinal(type, formattedConditions);
-    // return finalConditions
-  };
-  
-
-  const deleteCondition = (index) => {
-    
-    const updatedConditions = [...conditions];
-    
-    updatedConditions.splice(index, 1);
-  
-    
-    setConditions(updatedConditions);
-  };
-  return (
-    <div className="App">
-     
-      <div style={{display: display ? 'block' : 'none'   }}>
-      <div style={{margin: 20}}>
-      <Toggle size="lg" checkedChildren="AND" unCheckedChildren="OR" disabled={conditions.length > 1 ? false : true}/>
-  
-      </div>
-      <div>
-       
-        <ul style={{ listStyleType: "none" }}>
-          {conditions.map((val, index) => (
-
-<div className="comments-list" key={`val_${index}`}>
-  <div className="comment-chain-container">
-    <div className="comment-container">
-      <div className="comment-icon"></div>
-      <div className="comment">            
-        <li key={index} className="groupBy flexDiv" >
-              <div id={index} className="flexDiv">
-                <>
-                    {console.log(val._first_period)}
-                <Badge content={(val._first_period !== undefined ? val._first_period : '') + (val._first_offset !== undefined ? (val._first_period !== undefined ? ', ' : '') + val._first_offset : '') + (val._first_candle !== undefined ? (val._first_candle !== undefined ? ', ' : '') + val._first_candle : '')}>
-     
-                <SelectPicker
-value={`${val.first}`}
-defaultValue="Open"
-  placeholder="+ Add"
-  groupBy="role"
-  data={data}
-  name={`first`}
-  style={{ width: 90, borderRadius: "0px" }}
-  onChange={(e) => {
-    setFormValue("first", index, e);
-  }}
-/>
-
-                  </Badge>
-                </>
-                &nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;
-                {val["first"] && (
-                  <>
-                  <Badge content={val.operator !==undefined ? val.operator : false} >
-                    <SelectPicker
-                      value={val.operator}
-                      placeholder="+ Operator"
-                      data={conditionalOperator}
-                      style={{
-                        width: "100%",
-                        maxWidth: 200,
-                        borderRadius: "0px",
-                      }}
-                      onChange={(e) => {
-                        setFormValue("operator", index, e);
-                      }}
-                    /></Badge>
-                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-                    <Badge content={(val._second_period !== undefined ? val._second_period : '') + (val._second_offset !== undefined ? (val._second_period !== undefined ? ', ' : '') + val._second_offset : '') + (val._second_candle !== undefined ? (val._second_candle !== undefined ? ', ' : '') + val._second_candle : '')}>
-                    <SelectPicker
-                    value={val.second}
-                      placeholder="+ Add"
-                      groupBy="role"
-                      data={data}
-                      name={`second`}
-                      style={{ width: 90, borderRadius: "0px" }}
-                      onChange={(e) => {
-                        setFormValue("second", index, e);
-                      }}
-                    /></Badge>
-                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-                    <Badge content={val.airthmetic !==undefined ? val.airthmetic : false} >
-                    <SelectPicker
-
-                      placeholder="+ Add"
-                      data={arithmeticOperators}
-                      name={`airthmetic`}
-                      style={{ width: 90, borderRadius: "0px" }}
-                      onChange={(e) => {
-                        
-                        setFormValue("airthmetic", index, e);
-                      }}
-                    />
-                    </Badge>
-                     
-                 
-                 {val?.indicators?.length>0 && <>
-                  
-                  {val.indicators.map((value, i)=>{
-return <div key={"indiOT"+ index}>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-
-<Badge content={val[`_indicators_${index}_${i}`] !== undefined ? val[`_indicators_${index}_${i}`] : false} >
-  <SelectPicker
-  value={val[`indicators_${index}_${i}`]}
-  
-  placeholder="+ Add"
-  data={data}
-  groupBy="role"
-  name={`indicators_${index}_${i}`}
-  style={{ width: 90, borderRadius: "0px" }}
-  onChange={(e) => {
-    setFormValue(`indicators_${index}_${i}`, index, e);
-  }}
-/>
-</Badge>
-</div>
-                   })}
-                   </>}
-
-                  </>
-                )}
-              </div>
-              <div  className="divIcon" title="Delete Conditions" style={{position:"absoulte", cursor: "pointer"}}>
-               
-              
-               <TrashIcon style={{fontSize:20}} onClick={()=>{
-                deleteCondition(index);
-              }}/>
- 
- 
-              </div>
-            </li></div>
-            <div className="chain chain-bottom"></div>
-    </div>
-   
-  
-  </div>
-</div>
-          ))}
-        </ul>
-      </div>
-     <div className="AdditionalButton">
-     {/* <Button
-        onClick={() => {
-          var jsonFormat = getSelectedValuesAsJSON();
-          
-          
-          setFormValueFinal(type, jsonFormat);
-         
-        }}
-        appearance="link"
-      >
-        Get Selected Values as JSON
-      </Button> */}
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <Button onClick={handleAddCondition} appearance="link">
-        + Add Condition
-      </Button>
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <Button
-        onClick={() => {
-          alert(currentIndex)
-        }}
-        appearance="link"
-      >
-        + Add Group
-      </Button>
-     </div>
-     </div>
-
-      <Modal open={open} onClose={handleClose} backdrop="static" keyboard={false} backdropClassName="modalBackdrop">
-        <Modal.Header>
-          <Modal.Title>{header}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-        
-        {["RSI", "SMA", "RMA", "EMA", "ATR"].includes(header) && <> <b>Period:</b> <Input
-          
-            type="number"
-            onChange={(e) => {
-              setFormValue(`_${fieldValue}_period`, currentIndex, e);
-            }}
-          /><br /></>}
-          
-          <b>Offset:</b> <Input
-          
-            type="number"
-            onChange={(e) => {
-              setFormValue(`_${fieldValue}_offset`, currentIndex, e);
-            }}
-          />
-
-{["SMA", "RMA", "EMA"].includes(header) && <> <br /><b>Candle:</b> 
-<br />
-<select style={{width: "100%"}} className="rs-input" onChange={(e) => {
-              setFormValue(`_${fieldValue}_candle`, currentIndex, e.target.value, "Candle");
-            }}>
-<option>Open</option>
-<option>Close</option>
-<option>High</option>
-<option>Low</option>
-<option>Volume</option>
-
-</select>
-<br /></>}      
-        </Modal.Body>
-        <Modal.Footer>
-          <Button onClick={handleClose} appearance="primary">
-            Done
-          </Button>
-          <Button onClick={handleClose} appearance="subtle">
-            Cancel
-          </Button>
-        </Modal.Footer>
-      </Modal>
-     
-      
-    </div>
-   
+const instrumentList =  ListedCompany.map(
+    item => ({ label: item, value: item })
   );
+
+  
+export default function BacktestStocks() {
+  const textInput = useRef(null)
+    const dispatch = useDispatch()
+    const [showEntry, setShowEntry] = useState(true);
+    const [showExit, setShowExit] = useState(true);
+    const [backtestName, setbacktestName] = useState("Backtest");
+   const [logicValue, setLogicValue] = useState({"EntryIndicators": "", "ExitIndicators": ""});
+  const [tradingConditions, setTradingConditions] = useState({
+    targetProfit: true,
+    stopLoss: true,
+    trailSL: true,
+    reEntryTgt: true,
+    reEntrySL: true,
+    simpleM: true
+  });
+
+const [formFields, setFormFileds] = useState({
+    "PositionType": "",
+    "Lots": 0,
+    "timeframe":null,
+    "Instrument": {
+        "Type": "Stock",
+        "Value":""
+    },
+   
+    "LegTarget": {
+        "Type": "LegTgtSLType.Percentage",
+        "Value": null
+    },
+    "LegStopLoss": {
+        "Type": "LegTgtSLType.Percentage",
+        "Value": null
+    },
+    "LegTrailSL": {
+        "Type": "TrailStopLossType.Percentage",
+        "Value1": null,
+        "Value2": null,
+    },
+    "LegReentryTP": {
+        "Type": "ReentryType.Immediate",
+        "Value": null
+    },
+    "LegReentrySL": {
+        "Type": "ReentryType.Immediate",
+        "Value": null
+    },
+    "LegMomentum": {
+        "Type": "MomentumType.PointsUp",
+        "Value": null
+    },
+    "StartDate":null,
+    "EndDate":null
+});
+const [activeButton, setActiveButton] = useState(null);
+const [activeCandle, setActiveCandle] = useState(null);
+const [editable, setEditable] = useState(true);
+   const currentDate = getFormattedDate(); // Current date
+   const yesterdayDate = getFormattedDate(-1); // Yesterday's date
+   function getFormattedDate(offset = 0) {
+    const today = new Date();
+    today.setDate(today.getDate() + offset);
+    
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const day = String(today.getDate()).padStart(2, '0');
+    
+    return `${year}-${month}-${day}`;
+  }
+   const setFormValueFinal = async (type, data) => {
+    setLogicValue((prevLogicValue) => ({
+      ...prevLogicValue,
+      [type === "Entry" ? "EntryIndicators" : "ExitIndicators"]: data,
+    }));
+  
+    
+    const dispatchedData = await dispatch(formValue(logicValue));
+  
+    // console.log(logicValue); // This will log the previous state, not the updated state
+  };
+const saveStrategy = ()=>{
+   
+    
+    var fjson  = {
+        "name": backtestName, 
+    
+        "strategy": {
+            "ListOfLegConfigs": [
+                formFields
+            ]
+            ,
+            logicValue
+        },
+        
+    }
+    const jsonString = JSON.stringify(fjson, null, 2);
+    const blob = new Blob([jsonString], { type: 'application/json' });
+    const downloadLink = document.createElement('a');
+  downloadLink.href = URL.createObjectURL(blob);
+  downloadLink.download =  backtestName+'.json';
+  document.body.appendChild(downloadLink);
+  downloadLink.click();
+  document.body.removeChild(downloadLink);
+}
+  const exportToPDF = () => {
+    const element = document.getElementById('divToExport');
+    const options = {
+        margin: 10,
+        filename: 'Backtest_Strategy.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }, // Set orientation to 'landscape'
+      };
+    html2pdf(element, options);
+  };
+
+  const editName = ()=>{
+  
+    setEditable(!editable);
+    textInput.current.focus();
+  }
+
+  return <>
+ <Affix top={60}>
+<Row style={{marginBottom: 40, background: "#e7e7e7"}}>
+<Panel shaded style={{paddingBottom: "20px",background:"#10122b"}}>
+    <Col md={12}>
+        
+    </Col>
+    <Col md={4} sm={24}>
+    <Button onClick={exportToPDF}><FaDownload /> &nbsp;Download PDF</Button>
+    </Col>
+    <Col md={4} sm={24}>
+    <Button appearance="primary" onClick={saveStrategy}><FaSave /> &nbsp;Save Strategy</Button>
+    </Col>
+    <Col md={4} sm={24}>
+    <Button appearance="primary" color="green"><FaPlay /> &nbsp;Start Backtest</Button>
+    </Col>
+    </Panel>
+</Row>
+</Affix>
+  <Row>
+
+    <Col md={12} style={{display: "flex", alignItems: "center", gap:"2em"}}><span><h4><input type="text" className="rs-input" style={{border: "none", borderBottom: "1px solid #000", borderRadius: "0px"}} defaultValue={backtestName} readOnly={editable} onChange={(e)=>{
+      setbacktestName(e.target.value);
+    }} ref={textInput} /></h4></span><span style={{cursor: "pointer"}} title="Edit Name">
+     
+      <FaEdit onClick={editName}/>
+      
+      </span></Col>
+    <Col md={1}></Col>
+    <Col md={5}><h6>Credits: 0</h6></Col>
+    <Col md={5}><h6>Add Credits +</h6></Col>
+  </Row>
+  <hr />
+  <div id="divToExport">
+  <Row style={{marginTop: 30, marginBottom:30, padding: "3%", background: "#e7e7e7"}}>
+
+    <Col md={6}><p>Search Instrument</p><SelectPicker data={instrumentList} style={{ width: 300 }}  onChange={(e) => {
+    setFormFileds((prevFormFields) => ({
+      ...prevFormFields,
+      Instrument: {
+        ...prevFormFields.Instrument,
+        Value: e,
+      },
+    }));
+  }}/></Col>
+    <Col md={1}></Col>
+    <Col md={3}><p>Position</p><Button appearance="ghost" className={activeButton === 'Buy' ? 'active' : ''} onClick={() => {
+    setFormFileds((prevFormFields) => ({
+      ...prevFormFields,
+      PositionType: "Buy"
+    }));
+    setActiveButton("Buy")
+  }}>Buy</Button><Button appearance="ghost" className={activeButton === 'Sell' ? 'active' : ''} onClick={() => {
+    setFormFileds((prevFormFields) => ({
+      ...prevFormFields,
+      PositionType: "Sell"
+    }));
+    setActiveButton("Sell")
+  }}>Sell</Button></Col>
+    <Col md={1}></Col>
+    <Col md={2}><p>Quantity</p><Input type="number" min="1" onChange={(e) => {
+    setFormFileds((prevFormFields) => ({
+      ...prevFormFields,
+      "Lots": e
+    }));
+  }}/></Col>
+    <Col md={1}></Col>
+    <Col md={8}><p>Candle Intervals</p>
+    <ButtonToolbar>
+    <ButtonGroup>
+    <Button appearance="ghost" className={activeCandle === '1m' ? 'active' : ''} onClick={() => {
+    setFormFileds((prevFormFields) => ({
+      ...prevFormFields,
+      timeframe: "1m"
+    }));
+    setActiveCandle("1m")
+  }}>1min</Button>
+    <Button appearance="ghost" onClick={() => {
+    setFormFileds((prevFormFields) => ({
+      ...prevFormFields,
+      timeframe: "3m"
+    }));
+    setActiveCandle("3m")
+  }} className={activeCandle === '3m' ? 'active' : ''}>3min</Button>
+    <Button appearance="ghost" onClick={() => {
+    setFormFileds((prevFormFields) => ({
+      ...prevFormFields,
+      timeframe: "5m"
+    }));
+    setActiveCandle("5m")
+  }} className={activeCandle === '5m' ? 'active' : ''}>5min</Button>
+    <Button appearance="ghost" onClick={() => {
+    setFormFileds((prevFormFields) => ({
+      ...prevFormFields,
+      timeframe: "15m"
+    }));
+    setActiveCandle("15m")
+  }} className={activeCandle === '15m' ? 'active' : ''}>15min</Button>
+    <Button appearance="ghost" onClick={() => {
+    setFormFileds((prevFormFields) => ({
+      ...prevFormFields,
+      timeframe: "1h"
+    }));
+    setActiveCandle("1h")
+  }} className={activeCandle === '1h' ? 'active' : ''}>1hr</Button>
+    </ButtonGroup>
+  </ButtonToolbar>
+    
+    </Col>
+  </Row>
+   <div><h6 onClick={()=>{setShowEntry(!showEntry)}} style={{cursor: "pointer", display:"flex", alignItems:"center"}}>
+      Entry When &nbsp; {showEntry ? <FaAngleDown />:<FaAngleUp />}</h6></div>
+  <LogicBuilder display={showEntry} type="Entry" setFormValueFinal={setFormValueFinal}/>
+
+  <div style={{marginTop:"5%"}}><h6 onClick={()=>{setShowExit(!showExit)}} style={{cursor: "pointer", display:"flex", alignItems:"center"}}>
+      Exit When &nbsp; {showExit ? <FaAngleDown />:<FaAngleUp />}</h6></div>
+  <LogicBuilder display={showExit} type="Exit" setFormValueFinal={setFormValueFinal}/>
+ 
+  <Row style={{marginTop:50}}>
+    <Col md={24}>
+        <h5>
+        Trading Conditions
+        </h5>
+        <Row style={{padding:30, background: "#e7e7e7"}}>
+         
+            <Col md={8}>Target Profit &nbsp;<Toggle size="md" onChange={(e)=>{
+
+setTradingConditions({...tradingConditions,["targetProfit"]: !e})
+            }}/>
+            <br/><br/>
+            <Row>
+                <Col md={9}> <select className="rs-input" style={{ background:"#10122b", color:"#ffffff"}} disabled={tradingConditions.targetProfit} onChange={(e) => {
+    setFormFileds((prevFormFields) => ({
+      ...prevFormFields,
+      LegTarget: {
+        ...prevFormFields.LegTarget,
+        Type: e.target.value,
+      },
+    }));
+  }} >
+                <option value="LegTgtSLType.Percentage">Percent(%)</option>
+                <option value="LegTgtSLType.Points">Points(Pts)</option>
+                </select>
+                </Col>
+                <Col md={12}><input className="rs-input" style={{width: 100}} type="number" min="0" disabled={tradingConditions.targetProfit} onChange={(e) => {
+    setFormFileds((prevFormFields) => ({
+      ...prevFormFields,
+      LegTarget: {
+        ...prevFormFields.LegTarget,
+        Value: e.target.value,
+      },
+    }));
+  }}/></Col>
+            </Row>
+           
+                
+                
+                
+                </Col>
+            <Col md={8}>Stop Loss &nbsp;<Toggle size="md" onChange={(e)=>{
+
+setTradingConditions({...tradingConditions, ["stopLoss"]: !e})
+            }}/> <br/><br/>
+            <Row>
+                <Col md={9}> <select className="rs-input" style={{ background:"#10122b", color:"#ffffff"}}  disabled={tradingConditions.stopLoss} onChange={(e) => {
+    setFormFileds((prevFormFields) => ({
+      ...prevFormFields,
+      LegStopLoss: {
+        ...prevFormFields.LegStopLoss,
+        Type: e.target.value,
+      },
+    }));
+  }}>
+                <option value="LegTgtSLType.Percentage">Percent(%)</option>
+                <option value="LegTgtSLType.Points">Points(Pts)</option>
+                </select>
+                </Col>
+                <Col md={12}><input className="rs-input" style={{width: 100}} type="number" min="0" disabled={tradingConditions.stopLoss} onChange={(e) => {
+    setFormFileds((prevFormFields) => ({
+      ...prevFormFields,
+      LegStopLoss: {
+        ...prevFormFields.LegStopLoss,
+        Value: e.target.value,
+      },
+    }));
+  }}/></Col>
+            </Row>
+           </Col>
+            <Col md={8}>Trail SL  <Whisper followCursor speaker={<Tooltip>With trailing SL, you can move your actual stop loss, whenever the price moves in your favor. So every time the instrument moves in your favor by X amount, we will move the stop loss Y amount in the same direction. Amount can be in terms of points or percentage.</Tooltip>}>
+   <span style={{cursor: "pointer", verticalAlign:"-2px"}}><FaInfoCircle /></span>
+  </Whisper>&nbsp;&nbsp;<Toggle size="md"  onChange={(e)=>{
+
+setTradingConditions({...tradingConditions, ["trailSL"]: !e})
+            }}/> <br/><br/>
+            <Row>
+                <Col md={9}> <select className="rs-input" style={{ background:"#10122b", color:"#ffffff"}}  disabled={tradingConditions.trailSL} onChange={(e) => {
+    setFormFileds((prevFormFields) => ({
+      ...prevFormFields,
+      LegTrailSL: {
+        ...prevFormFields.LegTrailSL,
+        Type: e.target.value,
+      },
+    }));
+  }}>
+                <option value="TrailStopLossType.Percentage">Percent(%)</option>
+                <option value="TrailStopLossType.Points">Points(Pts)</option>
+                </select>
+                </Col>
+                <Col md={6}><input className="rs-input" style={{width: 80}} type="number" min="1"  disabled={tradingConditions.trailSL} onChange={(e) => {
+    setFormFileds((prevFormFields) => ({
+      ...prevFormFields,
+      LegTrailSL: {
+        ...prevFormFields.LegTrailSL,
+        Value1: e.target.value,
+      },
+    }));
+  }}/></Col> <Col md={6}><input className="rs-input" style={{width: 80}} type="number" min="1"  disabled={tradingConditions.trailSL} onChange={(e) => {
+    setFormFileds((prevFormFields) => ({
+      ...prevFormFields,
+      LegTrailSL: {
+        ...prevFormFields.LegTrailSL,
+        Value2: e.target.value,
+      },
+    }));
+  }}/></Col>
+            </Row>
+           </Col>
+        </Row>
+        <Row style={{padding:30, background: "#e7e7e7"}}>
+         
+            <Col md={8}>Re-entry on Tgt &nbsp;<Toggle size="md" onChange={(e)=>{
+
+setTradingConditions({...tradingConditions, ["reEntryTgt"]: !e})
+            }}/><br/><br/>
+            <Row>
+                <Col md={9}> <select className="rs-input" style={{ background:"#10122b", color:"#ffffff"}} disabled={tradingConditions.reEntryTgt} onChange={(e) => {
+    setFormFileds((prevFormFields) => ({
+      ...prevFormFields,
+      LegReentryTP: {
+        ...prevFormFields.LegReentryTP,
+        Type: e.target.value,
+      },
+    }));
+  }}>
+                <option value="ReentryType.Immediate" >RE ASAP</option><option value="ReentryType.ImmediateReverse" >RE ASAP ↩</option><option value="ReentryType.LikeOriginal" >RE MOMENTUM</option><option value="ReentryType.LikeOriginalReverse">RE MOMENTUM ↩</option><option value="ReentryType.AtCost">RE COST</option><option value="ReentryType.AtCostReverse">RE COST ↩</option>
+                </select>
+                </Col>
+                <Col md={12}><input className="rs-input" style={{width: 100}} type="number" min="1" disabled={tradingConditions.reEntryTgt} onChange={(e) => {
+    setFormFileds((prevFormFields) => ({
+      ...prevFormFields,
+      LegReentryTP: {
+        ...prevFormFields.LegReentryTP,
+        Value: e.target.value,
+      },
+    }));
+  }}/></Col>
+            </Row></Col>
+            <Col md={8}>Re-entry on SL <Whisper followCursor speaker={<Tooltip>With trailing SL, you can move your actual stop loss, whenever the price moves in your favor. So every time the instrument moves in your favor by X amount, we will move the stop loss Y amount in the same direction. Amount can be in terms of points or percentage.</Tooltip>}>
+   <span style={{cursor: "pointer", verticalAlign:"-2px"}}><FaInfoCircle /></span>
+  </Whisper>&nbsp;&nbsp;<Toggle size="md" onChange={(e)=>{
+
+setTradingConditions({...tradingConditions, ["reEntrySL"]: !e})
+            }}/><br/><br/>
+            <Row>
+                <Col md={9}> <select className="rs-input" style={{ background:"#10122b", color:"#ffffff"}} disabled={tradingConditions.reEntrySL} onChange={(e) => {
+    setFormFileds((prevFormFields) => ({
+      ...prevFormFields,
+      LegReentrySL: {
+        ...prevFormFields.LegReentrySL,
+        Type: e.target.value,
+      },
+    }));
+  }}>
+                <option value="ReentryType.Immediate">RE ASAP</option><option value="ReentryType.ImmediateReverse">RE ASAP ↩</option><option value="ReentryType.LikeOriginal">RE MOMENTUM</option><option value="ReentryType.LikeOriginalReverse">RE MOMENTUM ↩</option><option value="ReentryType.AtCost">RE COST</option><option value="ReentryType.AtCostReverse">RE COST ↩</option>
+                </select>
+                </Col>
+                <Col md={12}><input className="rs-input" style={{width: 100}} type="number" min="1" disabled={tradingConditions.reEntrySL} onChange={(e) => {
+    setFormFileds((prevFormFields) => ({
+      ...prevFormFields,
+      LegReentrySL: {
+        ...prevFormFields.LegReentrySL,
+        Value: e.target.value,
+      },
+    }));
+  }}/></Col>
+            </Row></Col>
+            <Col md={8}>Simple Momentum <Whisper followCursor speaker={<Tooltip>With trailing SL, you can move your actual stop loss, whenever the price moves in your favor. So every time the instrument moves in your favor by X amount, we will move the stop loss Y amount in the same direction. Amount can be in terms of points or percentage.</Tooltip>}>
+   <span style={{cursor: "pointer", verticalAlign:"-2px"}}><FaInfoCircle /></span>
+  </Whisper>&nbsp;&nbsp;<Toggle size="md" onChange={(e)=>{
+setTradingConditions({...tradingConditions, ["simpleM"]: !e})
+            }}/><br/><br/>
+            <Row>
+                <Col md={9}> <select className="rs-input" style={{ background:"#10122b", color:"#ffffff"}} disabled={tradingConditions.simpleM} onChange={(e) => {
+    setFormFileds((prevFormFields) => ({
+      ...prevFormFields,
+      LegMomentum: {
+        ...prevFormFields.LegMomentum,
+        Value: e.target.value,
+      },
+    }));
+  }}>
+                <option value="MomentumType.PointsUp">Points (Pts) ↑</option><option value="MomentumType.PointsDown">Points (Pts) ↓</option><option value="MomentumType.PercentageUp">Percent (%) ↑</option><option value="MomentumType.PercentageDown">Percent (%) ↓</option>
+                </select>
+                </Col>
+                <Col md={12}><input className="rs-input" style={{width: 100}} type="number" min="0" disabled={tradingConditions.simpleM} onChange={(e) => {
+    setFormFileds((prevFormFields) => ({
+      ...prevFormFields,
+      LegMomentum: {
+        ...prevFormFields.LegMomentum,
+        Value: e.target.value,
+      },
+    }));
+  }}/></Col>
+            </Row></Col>
+        </Row>
+    </Col>
+ </Row>
+ <Row style={{marginTop:50}}>
+    <Col md={24}>
+        <h5>
+        Date
+        </h5>
+        <Row style={{padding:30, background: "#e7e7e7"}}>
+            <Col md={12} sm={24}>Enter the duration of your backtest</Col>
+            <Col md={6} sm={24}>Start Date: <input type="date" defaultValue={currentDate} onChange={(e) => {
+    setFormFileds((prevFormFields) => ({
+      ...prevFormFields,
+     StartDate: e.target.value
+    }));
+  }}/></Col>
+            <Col md={6} sm={24}>End Date: <input type="date" defaultValue={yesterdayDate} onChange={(e) => {
+    setFormFileds((prevFormFields) => ({
+      ...prevFormFields,
+     EndDate: e.target.value
+    }));
+  }}/></Col>
+        </Row>
+    </Col>
+ </Row>
+ </div>
+  </>
 }

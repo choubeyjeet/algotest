@@ -160,6 +160,7 @@ export default function LogicBuilder({display, type, setFormValueFinal}) {
         value: condition.operator,
         lhs: {
           type: ["RSI", "SMA", "RMA", "EMA", "ATR", "TR"].includes(firstcond) ? "Indicator" : firstcond === "Number" ? "Number" : "Selector",
+          value: firstcond,
           ...(firstcond !== "RSI" && { offset: condition._first_offset }),
           ...(firstcond === "RSI" && { offset: condition._first_offset, args : {
             period: condition._first_period
@@ -172,6 +173,7 @@ export default function LogicBuilder({display, type, setFormValueFinal}) {
         
         rhs: {
           type: ["RSI", "SMA", "RMA", "EMA", "ATR", "TR"].includes(secondcond) ? "Indicator" : secondcond === "Number" ? "Number" : "Selector",
+          value: secondcond,
           ...(secondcond !== "RSI" && { offset: condition._second_offset }),
           ...(secondcond === "RSI" && {offset: condition._second_offset , "args": {
             "period": condition._second_period

@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import TrashIcon from '@rsuite/icons/Trash';
-import { FaAngleDown, FaAngleUp, FaDownload, FaSave, FaPlay, FaInfoCircle } from "react-icons/fa";
+import { FaAngleDown, FaAngleUp, FaDownload, FaSave, FaPlay, FaInfoCircle, FaEdit, } from "react-icons/fa";
 import { SelectPicker,Row, Col, Button, Input, Panel, Affix, ButtonToolbar, ButtonGroup, Toggle, Tooltip, Whisper, InputGroup } from "rsuite";
 import LogicBuilder from "../Logic/LogicBuilder";
 import { useDispatch } from "react-redux";
@@ -14,9 +14,11 @@ const instrumentList =  ListedCompany.map(
 
   
 export default function BacktestStocks() {
+  const textInput = useRef(null)
     const dispatch = useDispatch()
     const [showEntry, setShowEntry] = useState(true);
     const [showExit, setShowExit] = useState(true);
+    const [backtestName, setbacktestName] = useState("Backtest");
    const [logicValue, setLogicValue] = useState({"EntryIndicators": "", "ExitIndicators": ""});
   const [tradingConditions, setTradingConditions] = useState({
     targetProfit: true,
@@ -66,7 +68,7 @@ const [formFields, setFormFileds] = useState({
 });
 const [activeButton, setActiveButton] = useState(null);
 const [activeCandle, setActiveCandle] = useState(null);
-
+const [editable, setEditable] = useState(true);
    const currentDate = getFormattedDate(); // Current date
    const yesterdayDate = getFormattedDate(-1); // Yesterday's date
    function getFormattedDate(offset = 0) {
@@ -94,7 +96,7 @@ const saveStrategy = ()=>{
    
     
     var fjson  = {
-        "name": "test", 
+        "name": backtestName, 
     
         "strategy": {
             "ListOfLegConfigs": [
@@ -109,7 +111,7 @@ const saveStrategy = ()=>{
     const blob = new Blob([jsonString], { type: 'application/json' });
     const downloadLink = document.createElement('a');
   downloadLink.href = URL.createObjectURL(blob);
-  downloadLink.download =  'download.json';
+  downloadLink.download =  backtestName+'.json';
   document.body.appendChild(downloadLink);
   downloadLink.click();
   document.body.removeChild(downloadLink);
@@ -125,6 +127,13 @@ const saveStrategy = ()=>{
       };
     html2pdf(element, options);
   };
+
+  const editName = ()=>{
+  
+    setEditable(!editable);
+    textInput.current.focus();
+  }
+
   return <>
  <Affix top={60}>
 <Row style={{marginBottom: 40, background: "#e7e7e7"}}>
@@ -146,8 +155,14 @@ const saveStrategy = ()=>{
 </Affix>
   <Row>
 
-    <Col md={4}><h4>Backtest</h4></Col>
-    <Col md={10}></Col>
+    <Col md={12} style={{display: "flex", alignItems: "center", gap:"2em"}}><span><h4><input type="text" className="rs-input" style={{border: "none", borderBottom: "1px solid #000", borderRadius: "0px"}} defaultValue={backtestName} readOnly={editable} onChange={(e)=>{
+      setbacktestName(e.target.value);
+    }} ref={textInput} /></h4></span><span style={{cursor: "pointer"}} title="Edit Name">
+     
+      <FaEdit onClick={editName}/>
+      
+      </span></Col>
+    <Col md={1}></Col>
     <Col md={5}><h6>Credits: 0</h6></Col>
     <Col md={5}><h6>Add Credits +</h6></Col>
   </Row>

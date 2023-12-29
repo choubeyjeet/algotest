@@ -2,7 +2,7 @@ import { Container, Header, Sidebar, Sidenav, Content, Navbar, Nav } from 'rsuit
 import CogIcon from '@rsuite/icons/legacy/Cog';
 import AngleLeftIcon from '@rsuite/icons/legacy/AngleLeft';
 import AngleRightIcon from '@rsuite/icons/legacy/AngleRight';
-
+import { RiStockLine, AiOutlineStock, RiStockFill } from "react-icons/ri";
 import React from 'react';
 
 
@@ -63,7 +63,7 @@ export default function SideNavbar({setShow}) {
             eventKey="2"
             trigger="hover"
             title="#920Simple"
-            // icon={<MagicIcon />}
+            icon={<AiOutlineStock />}
             placement="rightStart"
           >
             <Nav.Item eventKey="2-1" onClick={()=>{setShow("Simple")}}>+ Add new</Nav.Item>
@@ -73,7 +73,7 @@ export default function SideNavbar({setShow}) {
             eventKey="3"
             trigger="hover"
             title="#920Straddle"
-            // icon={<MagicIcon />}
+            icon={<RiStockFill />}
             placement="rightStart"
           >
             <Nav.Item eventKey="3-1" onClick={()=>{setShow("Straddle")}}>+ Add new</Nav.Item>
@@ -83,7 +83,7 @@ export default function SideNavbar({setShow}) {
             eventKey="4"
             trigger="hover"
             title="VWAP"
-            // icon={<MagicIcon />}
+             icon={<RiStockLine />}
             placement="rightStart"
           >
             <Nav.Item eventKey="4-1" onClick={()=>{setShow("VWAP")}}>+ Add new</Nav.Item>

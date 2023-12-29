@@ -2,7 +2,8 @@ import { Container, Header, Sidebar, Sidenav, Content, Navbar, Nav } from 'rsuit
 import CogIcon from '@rsuite/icons/legacy/Cog';
 import AngleLeftIcon from '@rsuite/icons/legacy/AngleLeft';
 import AngleRightIcon from '@rsuite/icons/legacy/AngleRight';
-import { RiStockLine, AiOutlineStock, RiStockFill } from "react-icons/ri";
+import { RiStockLine, RiStockFill } from "react-icons/ri";
+import { AiOutlineStock } from "react-icons/ai";
 import React from 'react';
 
 

@@ -37,7 +37,7 @@ export default function SideNavbar({setShow}) {
   
     return <>   <Sidebar
     style={{ display: 'flex', flexDirection: 'column'}}
-    width={expand ? 200 : 56}
+    width={expand ? 260 : 56}
     collapsible
   >
    
@@ -54,7 +54,7 @@ export default function SideNavbar({setShow}) {
             eventKey="1"
             trigger="hover"
             title="#Stocks"
-            // icon={<MagicIcon />}
+           icon={<AiOutlineStock />}
             placement="rightStart"
           >
             <Nav.Item eventKey="1-1" onClick={()=>{setShow("Stocks")}}>+ Add new</Nav.Item>
@@ -64,7 +64,7 @@ export default function SideNavbar({setShow}) {
             eventKey="2"
             trigger="hover"
             title="#920Simple"
-            icon={<AiOutlineStock />}
+            icon={<RiStockFill />}
             placement="rightStart"
           >
             <Nav.Item eventKey="2-1" onClick={()=>{setShow("Simple")}}>+ Add new</Nav.Item>

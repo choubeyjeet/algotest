@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { FaDownload, FaSave, FaPlay } from "react-icons/fa";
+import { FaDownload, FaSave, FaPlay, FaPlus } from "react-icons/fa";
 import { SelectPicker,Row, Col, Button, Input, Panel, Affix, ButtonToolbar, ButtonGroup, Toggle, Tooltip, Whisper, InputGroup } from "rsuite";
 
 import html2pdf from 'html2pdf.js';
@@ -63,8 +63,32 @@ export default function BacktestSimple() {
    console.log(updatedConditions)
     setConditions(updatedConditions);
   } 
-  return <> 
- <Affix top={60}>
+  return <>
+  
+<a href="#" className="float">
+<FaPlus size="30" />
+</a>
+<ul className="floating">
+  <li>
+    <a onClick={exportToPDF} title="Download as PDF">
+   
+    <FaDownload size="30" />
+
+    
+    </a>
+  </li>
+  <li>
+    <a  title="Save Strategy">
+    <FaSave size="30"/>
+    </a>
+  </li>
+  <li>
+    <a href="#" title="Play Strategy">
+    <FaPlay size="30" />
+    </a>
+  </li>
+</ul> 
+ {/* <Affix top={60}>
 <Row style={{marginBottom: 40, background: "#e7e7e7"}}>
 <Panel shaded style={{paddingBottom: "20px",background:"#10122b"}}>
     <Col md={12}>
@@ -81,7 +105,7 @@ export default function BacktestSimple() {
     </Col>
     </Panel>
 </Row>
-</Affix>
+</Affix> */}
   <Row>
 
     <Col md={4}><h4>New Strategy</h4></Col>

@@ -166,13 +166,13 @@ export default function BacktestSimple() {
     setActiveButton({ ...activeButton, ["activeButton" + index]: "Sell" });
   }}>Sell</Button></Col>
 <Col md={6}>Option Type <br />
-<Button appearance="ghost" className={optionButton === 'Call' ? 'active' : ''} onClick={() => {
+<Button appearance="ghost" className={optionButton["optionButton" + index] === 'Call' ? 'active' : ''} onClick={() => {
   setFormValue("option", index, "Call");
-    setOptionButton("Call")
+    setOptionButton({ ...optionButton, ["optionButton" + index]: "Call" })
   }}
-  >Call</Button><Button appearance="ghost" className={optionButton === 'Put' ? 'active' : ''} onClick={() => {
+  >Call</Button><Button appearance="ghost" className={optionButton["optionButton" + index] === 'Put' ? 'active' : ''} onClick={() => {
     setFormValue("option", index, "Put");
-    setOptionButton("Put")
+    setOptionButton({ ...optionButton, ["optionButton" + index]: "Put" })
   }}>Put</Button></Col>
 <Col md={6}>Strike Type <br />
 <select className="rs-input" style={{width: "50%"}} defaultValue="StrikeType.ATM" onChange={(e) => {
@@ -309,12 +309,12 @@ setTradingConditions({...tradingConditions, ["stopLoss"]: !e})
     
   }}>Sell</Button></Col>
 <Col md={6}>Option Type <br />
-<Button appearance="ghost" className={optionButton === 'Call' ? 'active' : ''} onClick={() => {
+<Button appearance="ghost" className={optionButton["optionButtondefault"]==="Call" ? 'active' : ''} onClick={() => {
   
-    setOptionButton("Call")
-  }}>Call</Button><Button appearance="ghost" className={optionButton === 'Put' ? 'active' : ''} onClick={() => {
+    setOptionButton({ ...optionButton, ["optionButtondefault"]: "Call" })
+  }}>Call</Button><Button appearance="ghost" className={optionButton["optionButtondefault"]==="Put" ? 'active' : ''} onClick={() => {
     
-    setOptionButton("Put")
+    setOptionButton({ ...optionButton, ["optionButtondefault"]: "Put" })
   }}>Put</Button></Col>
 <Col md={6}>Strike Type <br />
 <select className="rs-input" style={{width: "50%"}} defaultValue="StrikeType.ATM">

@@ -9,7 +9,7 @@ import html2pdf from 'html2pdf.js';
 export default function BacktestSimple() {
   const [conditions, setConditions] = useState([]);
   const [activeButton, setActiveButton] = useState({});
-  const [optionButton, setOptionButton] = useState(null);
+  const [optionButton, setOptionButton] = useState({});
   const [trailStopLoss, settrailStopLoss] = useState(false);
   const [setIntervalB, setIntervalButton] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(null);

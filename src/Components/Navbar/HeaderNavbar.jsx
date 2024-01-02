@@ -12,7 +12,7 @@ export default function HeaderNavbar() {
        <Navbar >
       <Navbar.Brand href="#"><img src={Icon} className='logo'/></Navbar.Brand>
       <Nav onSelect={setActiveKey} activeKey={activeKey}>
-        <Nav.Item eventKey="1" icon={<HomeIcon />}>
+        <Nav.Item eventKey="1" >
         Live trade
         </Nav.Item>
         <Nav.Item eventKey="2">Forward test</Nav.Item>

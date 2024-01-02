@@ -120,7 +120,7 @@ const saveStrategy = ()=>{
     const element = document.getElementById('divToExport');
     const options = {
         margin: 10,
-        filename: 'Backtest_Strategy.pdf',
+        filename: backtestName+'.pdf',
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { scale: 2 },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }, // Set orientation to 'landscape'

@@ -183,6 +183,11 @@ color: #ffffff !important;
 	display: block;
     cursor: pointer;
 }
+.floating li a:hover {
+
+    transform: scale(1.1); 
+  
+ }
 /* Hidden Buttons */
 a.float + ul {
   visibility: hidden;
@@ -192,7 +197,7 @@ a.float:hover + ul {
   visibility: visible;
   animation: scale-in 0.5s;
 }
-ul:hover {
+.floating:hover {
 	visibility: visible !important;
 }
 /* Center icons */

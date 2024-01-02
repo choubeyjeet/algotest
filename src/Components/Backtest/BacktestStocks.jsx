@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import TrashIcon from '@rsuite/icons/Trash';
-import { FaAngleDown, FaAngleUp, FaDownload, FaSave, FaPlay, FaInfoCircle, FaEdit, } from "react-icons/fa";
+import { FaAngleDown, FaAngleUp, FaDownload, FaSave, FaPlay, FaInfoCircle, FaEdit,FaPlus } from "react-icons/fa";
 import { SelectPicker,Row, Col, Button, Input, Panel, Affix, ButtonToolbar, ButtonGroup, Toggle, Tooltip, Whisper, InputGroup } from "rsuite";
 import LogicBuilder from "../Logic/LogicBuilder";
 import { useDispatch } from "react-redux";
@@ -135,7 +135,32 @@ const saveStrategy = ()=>{
   }
 
   return <>
- <Affix top={60}>
+
+<a href="#" className="float">
+<FaPlus size="30" />
+</a>
+<ul className="floating">
+  <li>
+    <a onClick={exportToPDF} title="Download as PDF">
+   
+    <FaDownload size="30" />
+
+    
+    </a>
+  </li>
+  <li>
+    <a onClick={saveStrategy} title="Save Strategy">
+    <FaSave size="30"/>
+    </a>
+  </li>
+  <li>
+    <a href="#" title="Play Strategy">
+    <FaPlay size="30" />
+    </a>
+  </li>
+</ul>
+
+ {/* <Affix top={60}>
 <Row style={{marginBottom: 40, background: "#e7e7e7"}}>
 <Panel shaded style={{paddingBottom: "20px",background:"#10122b"}}>
     <Col md={12}>
@@ -152,7 +177,7 @@ const saveStrategy = ()=>{
     </Col>
     </Panel>
 </Row>
-</Affix>
+</Affix> */}
   <Row>
 
     <Col md={12} style={{display: "flex", alignItems: "center", gap:"2em"}}><span><h4><input type="text" className="rs-input" style={{border: "none", borderBottom: "1px solid #000", borderRadius: "0px"}} defaultValue={backtestName} readOnly={editable} onChange={(e)=>{

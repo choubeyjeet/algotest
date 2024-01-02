@@ -482,7 +482,7 @@ setTradingConditions({...tradingConditions, ["simpleM"]: !e})
         Date
         </h5>
         <Row style={{padding:30, background: "#e7e7e7"}}>
-            <Col md={12} sm={24}>Enter the duration of your backtest</Col>
+            <Col md={10} sm={24}>Enter the duration of your backtest</Col>
             <Col md={6} sm={24}>Start Date: <input type="date" defaultValue={currentDate} onChange={(e) => {
     setFormFileds((prevFormFields) => ({
       ...prevFormFields,

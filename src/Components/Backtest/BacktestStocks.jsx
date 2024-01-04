@@ -193,7 +193,7 @@ const saveStrategy = ()=>{
   </Row>
   <hr />
   <div id="divToExport">
-  <Row style={{marginTop: 30, marginBottom:30, padding: "3%", background: "#e7e7e7"}}>
+  <Row style={{marginTop: 30, marginBottom:30, padding: "3%"}} className="greyBox">
 
     <Col md={6}><p>Search Instrument</p><SelectPicker data={instrumentList} style={{ width: 300 }}  onChange={(e) => {
     setFormFileds((prevFormFields) => ({
@@ -282,7 +282,7 @@ const saveStrategy = ()=>{
         <h5>
         Trading Conditions
         </h5>
-        <Row style={{padding:30, background: "#e7e7e7"}}>
+        <Row style={{padding:30}} className="greyBox">
          
             <Col md={8}>Target Profit &nbsp;<Toggle size="md" onChange={(e)=>{
 
@@ -387,7 +387,7 @@ setTradingConditions({...tradingConditions, ["trailSL"]: !e})
             </Row>
            </Col>
         </Row>
-        <Row style={{padding:30, background: "#e7e7e7"}}>
+        <Row style={{padding:30}} className="greyBox">
          
             <Col md={8}>Re-entry on Tgt &nbsp;<Toggle size="md" onChange={(e)=>{
 
@@ -481,7 +481,7 @@ setTradingConditions({...tradingConditions, ["simpleM"]: !e})
         <h5>
         Date
         </h5>
-        <Row style={{padding:30, background: "#e7e7e7"}}>
+        <Row style={{padding:30}} className="greyBox">
             <Col md={10} sm={24}>Enter the duration of your backtest</Col>
             <Col md={6} sm={24}>Start Date: <input type="date" defaultValue={currentDate} onChange={(e) => {
     setFormFileds((prevFormFields) => ({

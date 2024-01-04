@@ -8,6 +8,7 @@ import React from 'react';
 import GroupIcon from '@rsuite/icons/legacy/Group';
 import GrowthIcon from '@rsuite/icons/Growth';
 import TrendIcon from '@rsuite/icons/Trend';
+import { Link } from 'react-router-dom';
 
 const NavToggle = ({ expand, onChange }) => {
     return (
@@ -59,7 +60,7 @@ export default function SideNavbar({setShow}) {
            icon={<AdvancedAnalyticsIcon />}
             placement="rightStart"
           >
-            <Nav.Item eventKey="1-1" onClick={()=>{setShow("Stocks")}}>+ Add new</Nav.Item>
+            <Nav.Item eventKey="1-1" onClick={()=>{setShow("Stocks")}} as={Link} to="/">+ Add new</Nav.Item>
             
           </Nav.Menu>
           <Nav.Menu
@@ -69,7 +70,7 @@ export default function SideNavbar({setShow}) {
             icon={<FunnelIcon />}
             placement="rightStart"
           >
-            <Nav.Item eventKey="2-1" onClick={()=>{setShow("Simple")}}>+ Add new</Nav.Item>
+            <Nav.Item eventKey="2-1" onClick={()=>{setShow("Simple")}} as={Link} to="/">+ Add new</Nav.Item>
             
           </Nav.Menu>
           <Nav.Menu

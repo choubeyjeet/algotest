@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
 import Login from "./Components/Login/Login";
@@ -9,6 +9,24 @@ import SideNavbar from "./Components/Navbar/SideNavbar";
 
 
 export default function App() {
+
+  const theme = localStorage.getItem("theme");
+
+useEffect(() => {
+  // Remove both classes to avoid accidentally toggling both
+  document.body.classList.remove('dark-mode', 'light-mode');
+
+  if (theme === "dark") {
+    
+    document.body.classList.add('dark-mode');
+  }
+
+  if (theme === "light") {
+  
+    document.body.classList.add('light-mode');
+  }
+}, [theme]);
+  
 
 const [showStocksWindow, setshowStocksWindow] =  useState("Stocks")
 

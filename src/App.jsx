@@ -7,6 +7,7 @@ import { Container, Content, Header, Affix } from "rsuite";
 import HeaderNavbar from "./Components/Navbar/HeaderNavbar";
 import SideNavbar from "./Components/Navbar/SideNavbar";
 import PricingPlan from "./Components/Pricing/PricingPlan";
+import ChartsView from "./Components/Charts/ChartsView";
 
 
 export default function App() {
@@ -37,6 +38,26 @@ const [showStocksWindow, setshowStocksWindow] =  useState("Stocks")
     <Routes>
     
      {/* <Route path="/" element={<Login />} /> */}
+
+     <Route
+          path="/charts"
+          element={
+            <><Affix style={{zIndex:9999}}>
+             <Header><HeaderNavbar /></Header>
+             </Affix>
+              <Container>
+             
+        <Content style={{padding: "2%"}}>
+       <ChartsView />
+      </Content>
+      </Container>
+                
+                
+              
+            </>
+          }
+        />
+
 <Route
           path="/*"
           element={

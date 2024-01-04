@@ -265,3 +265,6 @@ body.light-mode {
 input {
     color: #000000 !important;
 }
+.dark-mode .rs-navbar {
+    background-color: #111315 !important;
+}

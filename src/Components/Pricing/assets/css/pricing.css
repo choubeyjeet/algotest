@@ -7,11 +7,11 @@
   
   .background::after {
     content: '';
-    background: #60a9ff;
-    background: -moz-linear-gradient(top, #60a9ff 0%, #4394f4 100%);
-    background: -webkit-linear-gradient(top, #60a9ff 0%,#4394f4 100%);
-    background: linear-gradient(to bottom, #60a9ff 0%,#4394f4 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#60a9ff', endColorstr='#4394f4',GradientType=0 );
+    background: #10122b;
+    background: -moz-linear-gradient(top, #10122b 0%, #4394f4 100%);
+    background: -webkit-linear-gradient(top, #10122b 0%,#4394f4 100%);
+    background: linear-gradient(to bottom, #10122b 0%,#4394f4 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#10122b', endColorstr='#4394f4',GradientType=0 );
     height: 300px;
     left: 0;
     position: absolute;
@@ -120,26 +120,26 @@
   
   .pricing-button {
     border: 1px solid #9dd1ff;
-    border-radius: 10px;
-    color: #348EFE;
+    text-decoration: none !important;
+    background: #10122b;
+    color: #ffffff !important;
     display: inline-block;
     margin: 25px 0;
     padding: 15px 35px;
-    text-decoration: none;
+  
     transition: all 150ms ease-in-out;
   }
-  
-  .pricing-button:hover,
-  .pricing-button:focus {
-    background-color: #e1f1ff;
+  .pricing-button:hover
+  {
+   transform: scale(1.1)
   }
-  
+ 
   .pricing-button.is-featured {
-    background-color: #48aaff;
+    background-color: #10122b;
     color: #fff;
   }
   
-  .pricing-button.is-featured:hover,
-  .pricing-button.is-featured:active {
-    background-color: #269aff;
+  .pricing-button.is-featured:hover
+  {
+   transform: scale(1.1)
   }

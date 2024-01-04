@@ -273,3 +273,7 @@ input {
     background: #B2BEB5 !important;
     color: #ffffff !important;
 }
+
+.dark-mode .rs-sidenav-item {
+    color: #ffffff !important;
+}

@@ -6,6 +6,7 @@ import HomeBackTestMain from "./Components/Backtest/HomeBackTestMain";
 import { Container, Content, Header, Affix } from "rsuite";
 import HeaderNavbar from "./Components/Navbar/HeaderNavbar";
 import SideNavbar from "./Components/Navbar/SideNavbar";
+import PricingPlan from "./Components/Pricing/PricingPlan";
 
 
 export default function App() {
@@ -39,7 +40,7 @@ const [showStocksWindow, setshowStocksWindow] =  useState("Stocks")
 <Route
           path="/*"
           element={
-            <><Affix>
+            <><Affix style={{zIndex:9999}}>
              <Header><HeaderNavbar /></Header>
              </Affix>
               <Container>
@@ -47,6 +48,7 @@ const [showStocksWindow, setshowStocksWindow] =  useState("Stocks")
         <Content style={{padding: "2%"}}>
         <Routes>
         <Route path="/" element={<HomeBackTestMain show={showStocksWindow} />} />
+        <Route path="/pricing" element={<PricingPlan  />} />
         </Routes>
       </Content>
       </Container>

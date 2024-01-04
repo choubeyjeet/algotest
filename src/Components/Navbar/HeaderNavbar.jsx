@@ -48,7 +48,7 @@ useEffect(()=>{
         <Nav.Item eventKey="2">Forward test</Nav.Item>
         <Nav.Item eventKey="3">Portfolios</Nav.Item>
         <Nav.Item eventKey="4">Signals</Nav.Item>
-        <Nav.Item eventKey="5">Charts</Nav.Item>
+        <Nav.Item eventKey="5" as={Link} to="/charts">Charts</Nav.Item>
         <Nav.Item eventKey="6">Simulator</Nav.Item>
         <Nav.Item eventKey="7">Analyser</Nav.Item>
         <Nav.Item eventKey="8" as={Link} to="/pricing">Pricing</Nav.Item>

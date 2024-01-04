@@ -201,7 +201,13 @@ a.float:hover + ul {
 	visibility: visible !important;
 }
 /* Center icons */
-a svg {
+.float svg {
+	font-size: 24px;
+	margin-top: 18px;
+    
+}
+
+.floating a svg {
 	font-size: 24px;
 	margin-top: 18px;
     

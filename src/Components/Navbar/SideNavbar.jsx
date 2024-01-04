@@ -37,14 +37,14 @@ const NavToggle = ({ expand, onChange }) => {
   
 export default function SideNavbar({setShow}) {
     const [expand, setExpand] = React.useState(true);
-  
+    const [activeKey, setActiveKey] = React.useState('1');
     return <>   <Sidebar
     style={{ display: 'flex', flexDirection: 'column'}}
     width={expand ? 220 : 56}
     collapsible
   >
    
-    <Sidenav expanded={expand} defaultOpenKeys={[]} appearance="subtle">
+    <Sidenav expanded={expand} activeKey={activeKey} onSelect={setActiveKey} defaultOpenKeys={[]} appearance="subtle">
       <Sidenav.Body>
         <Nav>
           {/* <Nav.Item eventKey="1" active icon={<DashboardIcon />}>
@@ -54,6 +54,7 @@ export default function SideNavbar({setShow}) {
             User Group
           </Nav.Item> */}
           <Nav.Menu
+            active
             eventKey="1"
             trigger="hover"
             title="#Stocks"

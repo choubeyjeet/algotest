@@ -268,3 +268,8 @@ input {
 .dark-mode .rs-navbar {
     background-color: #111315 !important;
 }
+
+.rs-navbar-item-active {
+    background: #B2BEB5 !important;
+    color: #ffffff !important;
+}

@@ -4,6 +4,8 @@ import Icon from "../Navbar/assets/img/stock.png";
 import { FaRegUserCircle, FaSignOutAlt } from "react-icons/fa";
 import { FaSun } from "react-icons/fa";
 import { FaMoon } from "react-icons/fa";
+import { Link } from 'react-router-dom';
+
 export default function HeaderNavbar() {
   const [activeKey, setActiveKey] = React.useState(null);
  
@@ -49,7 +51,7 @@ useEffect(()=>{
         <Nav.Item eventKey="5">Charts</Nav.Item>
         <Nav.Item eventKey="6">Simulator</Nav.Item>
         <Nav.Item eventKey="7">Analyser</Nav.Item>
-        <Nav.Item eventKey="8">Pricing</Nav.Item>
+        <Nav.Item eventKey="8" as={Link} to="/pricing">Pricing</Nav.Item>
         
         {/* <Nav.Menu title="About">
           <Nav.Item eventKey="4">Company</Nav.Item>

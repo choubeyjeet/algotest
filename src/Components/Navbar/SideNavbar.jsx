@@ -2,10 +2,12 @@ import { Container, Header, Sidebar, Sidenav, Content, Navbar, Nav } from 'rsuit
 import CogIcon from '@rsuite/icons/legacy/Cog';
 import AngleLeftIcon from '@rsuite/icons/legacy/AngleLeft';
 import AngleRightIcon from '@rsuite/icons/legacy/AngleRight';
-import { RiStockLine, RiStockFill } from "react-icons/ri";
-import { AiOutlineStock } from "react-icons/ai";
+import FunnelIcon from '@rsuite/icons/Funnel';
+import AdvancedAnalyticsIcon from '@rsuite/icons/AdvancedAnalytics';
 import React from 'react';
-
+import GroupIcon from '@rsuite/icons/legacy/Group';
+import GrowthIcon from '@rsuite/icons/Growth';
+import TrendIcon from '@rsuite/icons/Trend';
 
 const NavToggle = ({ expand, onChange }) => {
     return (
@@ -37,7 +39,7 @@ export default function SideNavbar({setShow}) {
   
     return <>   <Sidebar
     style={{ display: 'flex', flexDirection: 'column'}}
-    width={expand ? 260 : 56}
+    width={expand ? 220 : 56}
     collapsible
   >
    
@@ -54,7 +56,7 @@ export default function SideNavbar({setShow}) {
             eventKey="1"
             trigger="hover"
             title="#Stocks"
-           icon={<AiOutlineStock />}
+           icon={<AdvancedAnalyticsIcon />}
             placement="rightStart"
           >
             <Nav.Item eventKey="1-1" onClick={()=>{setShow("Stocks")}}>+ Add new</Nav.Item>
@@ -64,7 +66,7 @@ export default function SideNavbar({setShow}) {
             eventKey="2"
             trigger="hover"
             title="#920Simple"
-            icon={<RiStockFill />}
+            icon={<FunnelIcon />}
             placement="rightStart"
           >
             <Nav.Item eventKey="2-1" onClick={()=>{setShow("Simple")}}>+ Add new</Nav.Item>
@@ -74,7 +76,7 @@ export default function SideNavbar({setShow}) {
             eventKey="3"
             trigger="hover"
             title="#920Straddle"
-            icon={<RiStockFill />}
+            icon={<GrowthIcon />}
             placement="rightStart"
           >
             <Nav.Item eventKey="3-1" onClick={()=>{setShow("Straddle")}}>+ Add new</Nav.Item>
@@ -84,7 +86,7 @@ export default function SideNavbar({setShow}) {
             eventKey="4"
             trigger="hover"
             title="VWAP"
-             icon={<RiStockLine />}
+             icon={<TrendIcon />}
             placement="rightStart"
           >
             <Nav.Item eventKey="4-1" onClick={()=>{setShow("VWAP")}}>+ Add new</Nav.Item>

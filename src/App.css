@@ -281,3 +281,7 @@ input {
 .dark-mode #chart {
     color: #000000 !important;
 }
+.rs-dropdown-item-active {
+    background: #B2BEB5 !important;
+    color: #ffffff !important;
+}

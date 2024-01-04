@@ -243,3 +243,25 @@ a.float:hover > i{
     align-items: self-end !important;
     gap: 10px !important;
 }
+
+body.light-mode {
+    background-color: #fff !important;
+    color: #000 !important;
+  }
+  
+  /* Dark theme */
+  body.dark-mode {
+    background-color: #111315 !important;
+    color: #fff !important;
+  }
+
+  .light-mode .greyBox{
+    background: #e7e7e7; 
+}
+
+.dark-mode .greyBox{
+    background: #111315; 
+}
+input {
+    color: #000000 !important;
+}

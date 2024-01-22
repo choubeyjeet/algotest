@@ -37,7 +37,7 @@ const [showStocksWindow, setshowStocksWindow] =  useState("Stocks")
     <>
     <Container>
     <Routes>
-    <Route path="/home" element={<HomePage/>} />
+    <Route path="/" element={<HomePage/>} />
     
 
      <Route
@@ -70,7 +70,7 @@ const [showStocksWindow, setshowStocksWindow] =  useState("Stocks")
               <SideNavbar setShow={setshowStocksWindow}/>
         <Content style={{padding: "2%"}}>
         <Routes>
-        <Route path="/" element={<HomeBackTestMain show={showStocksWindow} />} />
+        <Route path="/home" element={<HomeBackTestMain show={showStocksWindow} />} />
         <Route path="/pricing" element={<PricingPlan  />} />
         </Routes>
       </Content>

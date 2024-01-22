@@ -1,0 +1,45 @@
+.alignItemCenter
+{
+    background-color: #e7e7e7 !important;
+    height: 100vh;
+    border-top-left-radius: 20px; 
+    border-bottom-left-radius: 20px; 
+    display: flex;
+    align-items: center;
+    color: #000000;
+
+   
+}
+
+.alignItemCenter2 {
+    display: flex;
+    align-items: center;
+    background-color: palegoldenrod;
+    height: 100vh;
+    border-top-right-radius: 20px; 
+    border-bottom-right-radius: 20px; 
+}
+
+.noSpace {
+    margin: 0 !important;
+}
+
+.centerDiv {
+    width: 60%;
+    margin: 100px;
+}
+
+.startBtn {
+    border-radius: 10px !important;
+    margin-top:20px;
+    background-color: orange !important;
+    color: #ffffff !important;
+}
+
+.spaceDiv {
+    margin: 20px;
+}
+
+.IconDiv {
+    width: 40px;
+}

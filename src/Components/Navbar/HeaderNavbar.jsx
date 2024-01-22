@@ -40,7 +40,7 @@ useEffect(()=>{
   return (
     <>
        <Navbar >
-      <Navbar.Brand as={Link} to="/home"><img src={Icon} className='logo'/></Navbar.Brand>
+      <Navbar.Brand as={Link} to="/"><img src={Icon} className='logo'/></Navbar.Brand>
       <Nav onSelect={setActiveKey} activeKey={activeKey}>
         <Nav.Item eventKey="1" >
         Live trade

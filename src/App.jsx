@@ -8,6 +8,7 @@ import HeaderNavbar from "./Components/Navbar/HeaderNavbar";
 import SideNavbar from "./Components/Navbar/SideNavbar";
 import PricingPlan from "./Components/Pricing/PricingPlan";
 import ChartsView from "./Components/Charts/ChartsView";
+import HomePage from "./Components/Home/HomePage";
 
 
 export default function App() {
@@ -36,8 +37,8 @@ const [showStocksWindow, setshowStocksWindow] =  useState("Stocks")
     <>
     <Container>
     <Routes>
+    <Route path="/home" element={<HomePage/>} />
     
-     {/* <Route path="/" element={<Login />} /> */}
 
      <Route
           path="/charts"
@@ -57,6 +58,7 @@ const [showStocksWindow, setshowStocksWindow] =  useState("Stocks")
             </>
           }
         />
+
 
 <Route
           path="/*"

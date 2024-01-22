@@ -27,7 +27,7 @@ export default function HomePage (){
             Discover and create custom algorithmic trading conditions, analyze data and visualize trends.
             </div>
             
-            <Button className="startBtn" as={Link} to="/">Start Trading</Button>
+            <Button className="startBtn" as={Link} to="/home">Start Trading</Button>
         </div>
             </Col>
         <Col md={12} sm={24} className="alignItemCenter2"><div><img src="https://www.volansys.com/wp-content/uploads/2022/12/Connected-Applications-Development.png" /></div></Col>

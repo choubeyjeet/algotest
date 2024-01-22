@@ -61,7 +61,7 @@ export default function SideNavbar({setShow}) {
            icon={<AdvancedAnalyticsIcon />}
             placement="rightStart"
           >
-            <Nav.Item eventKey="1-1" onClick={()=>{setShow("Stocks")}} as={Link} to="/">+ Add new</Nav.Item>
+            <Nav.Item eventKey="1-1" onClick={()=>{setShow("Stocks")}} as={Link} to="/home">+ Add new</Nav.Item>
             
           </Nav.Menu>
           <Nav.Menu
@@ -71,7 +71,7 @@ export default function SideNavbar({setShow}) {
             icon={<FunnelIcon />}
             placement="rightStart"
           >
-            <Nav.Item eventKey="2-1" onClick={()=>{setShow("Simple")}} as={Link} to="/">+ Add new</Nav.Item>
+            <Nav.Item eventKey="2-1" onClick={()=>{setShow("Simple")}} as={Link} to="/home">+ Add new</Nav.Item>
             
           </Nav.Menu>
           <Nav.Menu

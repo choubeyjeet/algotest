@@ -9,6 +9,7 @@ import SideNavbar from "./Components/Navbar/SideNavbar";
 import PricingPlan from "./Components/Pricing/PricingPlan";
 import ChartsView from "./Components/Charts/ChartsView";
 import HomePage from "./Components/Home/HomePage";
+import Dashboard from "./Components/Dashboard/Dashboard";
 
 
 export default function App() {
@@ -72,6 +73,7 @@ const [showStocksWindow, setshowStocksWindow] =  useState("Stocks")
         <Routes>
         <Route path="/home" element={<HomeBackTestMain show={showStocksWindow} />} />
         <Route path="/pricing" element={<PricingPlan  />} />
+        <Route path="/dashboard" element={<Dashboard  />} />
         </Routes>
       </Content>
       </Container>

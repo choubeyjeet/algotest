@@ -42,17 +42,19 @@ useEffect(()=>{
        <Navbar >
       <Navbar.Brand as={Link} to="/"><img src={Icon} className='logo'/></Navbar.Brand>
       <Nav onSelect={setActiveKey} activeKey={activeKey}>
-        <Nav.Item eventKey="1" >
+      <Nav.Item eventKey="1" as={Link} to="/dashboard">Dashboard</Nav.Item>
+        <Nav.Item eventKey="2" >
         Live trade
         </Nav.Item>
-        <Nav.Item eventKey="2">Forward test</Nav.Item>
-        <Nav.Item eventKey="3">Portfolios</Nav.Item>
-        <Nav.Item eventKey="4">Signals</Nav.Item>
-        <Nav.Item eventKey="5" as={Link} to="/charts">Charts</Nav.Item>
-        <Nav.Item eventKey="6">Simulator</Nav.Item>
-        <Nav.Item eventKey="7">Analyser</Nav.Item>
-        <Nav.Item eventKey="8" as={Link} to="/pricing">Pricing</Nav.Item>
+        <Nav.Item eventKey="3">Forward test</Nav.Item>
+        <Nav.Item eventKey="4">Portfolios</Nav.Item>
+        <Nav.Item eventKey="5">Signals</Nav.Item>
+        <Nav.Item eventKey="6" as={Link} to="/charts">Charts</Nav.Item>
+        <Nav.Item eventKey="7">Simulator</Nav.Item>
+        <Nav.Item eventKey="8">Analyser</Nav.Item>
         
+        <Nav.Item eventKey="9" as={Link} to="/pricing">Pricing</Nav.Item>
+       
         {/* <Nav.Menu title="About">
           <Nav.Item eventKey="4">Company</Nav.Item>
           <Nav.Item eventKey="5">Team</Nav.Item>

@@ -4,6 +4,7 @@ import "./assets/css/dashboard.css";
 import { FaArrowCircleUp, FaArrowCircleDown } from "react-icons/fa";
 import React, { useState } from "react";
 import Transactions from "./Transactions";
+import ConditionTile from "./ConditionTile";
 
 const data ={ series: [{
     name: 'Net Profit',
@@ -137,7 +138,16 @@ Profit
     </Panel></Col>
         </Row>
         </Col>
-        <Col md={9}><Transactions /></Col>
+        <Col md={9}>
+
+            <Row>
+                <Col>
+                <Transactions /></Col>
+            </Row>
+            <Row style={{marginTop:55}}><Col>
+            <ConditionTile />
+            </Col></Row>
+        </Col>
         <Col md={1}></Col>
     </Row>
     

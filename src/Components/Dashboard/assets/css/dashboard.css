@@ -43,13 +43,30 @@
    
     cursor: pointer;
 }
+
+.cardSBasic23 {
+    background: #e7e7e7;
+    color: #000000 !important;
+}
+
+.onlyFlex2 {
+    display: flex;
+   
+    gap: 3px;
+   
+    cursor: pointer;
+}
+
 .onlyFlex p{
     padding: 10px; 
 }
-
+.onlyFlex2 div{
+    padding: 10px; 
+}
 .transactionL {
     list-style-type: none !important;
     padding: 0;
+    color: #000000;
     
 }
 

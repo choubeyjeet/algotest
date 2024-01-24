@@ -1,7 +1,10 @@
 import ReactApexChart from "react-apexcharts";
-import { Col, Row, Panel } from "rsuite"
+import { Col, Row, Panel, Progress } from "rsuite"
 import "./assets/css/dashboard.css";
 import { FaArrowCircleUp, FaArrowCircleDown } from "react-icons/fa";
+import React, { useState } from "react";
+import Transactions from "./Transactions";
+
 const data ={ series: [{
     name: 'Net Profit',
     data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
@@ -15,8 +18,11 @@ const data ={ series: [{
   options: {
     chart: {
       type: 'bar',
-      height: 350
+      height: 350,
+      background:"#ffe0b2",
+     
     },
+   
     plotOptions: {
       bar: {
         horizontal: false,
@@ -56,6 +62,9 @@ const data ={ series: [{
 };
 
 export default function Dashboard () {
+    const [percent, setPercent] = React.useState(30);
+    const status = percent === 100 ? 'success' : null;
+  const color = percent === 100 ? '#52c41a' : '#3385ff';
     return <>
     
     <Row>
@@ -86,14 +95,14 @@ Profit
     </Panel></Col>
         </Row>
 <Row style={{marginTop:50}}>
-    <Col md={24}><ReactApexChart options={data.options} series={data.series} type="bar"  /></Col>
+    <Col md={24}><ReactApexChart  options={data.options} series={data.series} type="bar" width={550} /></Col>
 </Row>
 
 
 
 <Row style={{marginTop:50}}>
 
-            <Col md={14}><Panel bordered header="Trading" className="cardSBasic2">
+            <Col md={12}><Panel bordered header="Trading" className="cardSBasic2">
     <h5>USD 10,000</h5>
     <div className="cardFlex">
 <div ><p><FaArrowCircleUp />&nbsp;<b>
@@ -108,12 +117,27 @@ Profit
   </Panel>
  
   </Col>
-            <Col md={10}><Panel bordered header="Investment Overview" className="cardSBasic2">
-            <h5>USD 5,000</h5>
+            <Col md={12}><Panel bordered header="Investment Overview" className="cardSBasic2">
+           <p>
+           <span><Progress.Line percent={68} strokeColor={color} status={status} /></span>
+           
+           </p>
+           <p>
+           <span><Progress.Line percent={20} strokeColor={color} status={status} /></span>
+         
+           </p>
+           <p>
+           <span><Progress.Line percent={10} strokeColor={color} status={status} /></span>
+          
+           </p>
+           <p>
+           <span><Progress.Line percent={2} strokeColor={color} status={status} /></span>
+          
+           </p>
     </Panel></Col>
         </Row>
         </Col>
-        <Col md={9}>Hellos</Col>
+        <Col md={9}><Transactions /></Col>
         <Col md={1}></Col>
     </Row>
     
